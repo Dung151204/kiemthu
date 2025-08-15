@@ -106,3 +106,18 @@
   background-color: #c23564;
   transition: all 0.2s ease;
 }
+.containerNavbar{
+    position: absolute;
+    top: 0;right: 0;left: 0;bottom: 0;
+    // background-color: #b7b7b733;
+    height: 100vh;
+    // display: none;
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+}
+.shownav{
+    // display: block;
+    transform: translateX(0);
+    // animation: transform ease 9s;
+
+}

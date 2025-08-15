@@ -11,10 +11,10 @@ const Product = (prop)=>{
                className="w-full"
             />
            <div className="pl-2 pr-2 relative flex-1  ">
-                <p className="mt-2">Áo sơ mi dành cho nam</p>
+                <p className="mt-2">{prop.name}</p>
                 <p className="flex justify-start items-end">
-                    <p className="text-[15px] line-through opacity-70">299.000đ</p>
-                     <h2 className="ml-2 text-[17px] font-semibold">189.000đ</h2>
+                    <p className="text-[15px] line-through opacity-70">{prop.oldPrice}</p>
+                     <h2 className="ml-2 text-[17px] font-semibold">{prop.price}</h2>
                 </p>
                 <div className="flex mt-2 items-center justify-between">
                    <p className="flex">
@@ -26,7 +26,7 @@ const Product = (prop)=>{
                    </p>
                    <p className="text-[14px]">Đã bán 125</p>
                 </div>
-                <button className="border border-[#c23564] rounded bg-white text-[#c23564] p-1 pr-3 pl-3 float-right mt-3 mb-3 w-full md:w-[130px] hover:opacity-80">Thêm vào giỏ</button>
+                <button className="border border-[#c23564] rounded hover:bg-[#c23564] hover:text-white bg-white text-[#c23564] p-1 pr-3 pl-3 float-right mt-3 mb-3 w-full md:w-[130px] hover:opacity-80">Thêm vào giỏ</button>
            </div>
 
         </Link>
