@@ -1,0 +1,108 @@
+.header-page {
+    width: 100%;
+    min-height: 100px;
+}
+.heading{
+    margin: 0 auto;
+    min-height: 87px;
+}
+.search-heading{
+    display: flex;
+    align-items:center;
+    // min-width: 360px;
+    // max-width: 400px;
+    background-color: green;
+    border-radius: 50%;
+    position: relative;
+    .input-search{
+        width: 100%;
+        height: 33px;
+        border-radius: 50px;
+        padding: 19px 20px;
+        outline: none;
+        border: 1px solid #d5d5d5;
+
+    }
+    .icon-search{
+        position: absolute;
+        right: 10px;
+       width: 40px;
+       height: 30px;
+       font-size: 20px;
+       &:hover{
+          cursor: pointer;
+       }
+    }
+}
+
+.cart-heading{
+    // background-color: red;
+    // width: 30px;
+    .icon-cart{
+        font-size: 30px;
+    }
+    p{
+       background-color: red;
+       width: 20px;height: 20px;
+       text-align: center;
+       line-height: 20px;
+       border-radius: 50px;
+       color: #fff;
+       position: relative;
+       top: -10px;
+       right: 10px;
+    }
+}
+
+.avt-profile{
+    border-radius: 50px;
+}
+
+.container-nav{
+    width: 100%;
+    min-height: 24px;
+    background-color: #f7f7f7;
+     position: relative;
+}
+.list-nav{
+    // min-width: 750px;
+   
+    li{
+        //  background-color: green;
+       a{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            // min-width: 158px;
+            line-height: 40px;
+            text-align: center;
+            padding: 0 20px;
+            font-size: 17px;
+            &:hover{
+                color: #bf3030;
+            }
+       }
+    }
+}
+
+.open{
+    li{
+        width: 100%;
+    }
+    display: block;
+    width: 200px;
+    float: right;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
+}
+
+.line{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 6px;
+  border-radius: 15px;
+  background-color: #c23564;
+  transition: all 0.2s ease;
+}
