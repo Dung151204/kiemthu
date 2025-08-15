@@ -49,10 +49,10 @@ const Footer = ()=>{
                     <p className="font-thin">tất cả các ngày trong tuần</p>
                 </div>
             </div>
-            <div className="p-5 bg-[#f7f7f7]">
-                <img src="/logo.png" alt="" className="w-52"/>
-                <p className="mb-2 mt-2"><b className="mr-2">Địa chỉ :</b>175 Tây Sơn</p>
-                <p className="mb-2"><b className="mr-2">Mã số doanh nghiệp :</b>toranoshop123</p>
+            <div className="p-2 bg-[#f7f7f7]">
+                <img src="/logo.png" alt="" className="w-40"/>
+                <p className="mb-1 mt-2"><b className="mr-2">Địa chỉ :</b>175 Tây Sơn</p>
+                <p className="mb-1"><b className="mr-2">Mã số doanh nghiệp :</b>toranoshop123</p>
                 <p className="mb-2"><b className="mr-2">Email:</b>shoptorano@gmail.com</p>
             </div>
         </div>

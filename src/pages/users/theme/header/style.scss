@@ -70,7 +70,9 @@
     li{
         //  background-color: green;
        a{
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             // min-width: 158px;
             line-height: 40px;
             text-align: center;
