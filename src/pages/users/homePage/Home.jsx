@@ -46,13 +46,13 @@ const HomePage = ()=>{
             }
         );
 
-        const handleResize = () => {
-            setWidthWindow(window.innerWidth);
-        };
-        window.addEventListener("resize", handleResize);
-        return () => {
-            window.removeEventListener("resize", handleResize);
-        };
+        // const handleResize = () => {
+        //     setWidthWindow(window.innerWidth);
+        // };
+        // window.addEventListener("resize", handleResize);
+        // return () => {
+        //     window.removeEventListener("resize", handleResize);
+        // };
     },[])
    
     return (
@@ -77,7 +77,7 @@ const HomePage = ()=>{
                                 className = 'w-[80%] h-[416px] '
                                 time = {5000}
                                 autoPlay = {true}
-                                slidesPerView = {widthWindow < 400 ? 2 : 4}
+                                slidesPerView = {4}
                                 spaceBetween={20}
                             >
                                 { dataProduct?.newProduct?.map((product)=>(
@@ -98,7 +98,7 @@ const HomePage = ()=>{
                    {/* danh mục sản phẩm */}
                    <div className='contentProduct relative'>
                        <h2 className="title tracking-widest uppercase w-full text-center underline text-[20px] mt-10 ">danh mục sản phẩm</h2>
-                       <div className=' grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8'> 
+                       <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8'> 
                             {isPending ? 
                             <h2 className='text-[100px]'>Loading</h2> : 
                             dataProduct?.products?.slice(0, 8).map((product)=>(

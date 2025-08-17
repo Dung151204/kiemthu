@@ -24,14 +24,13 @@ const tabs = [
 
 
 const Header = ()=>{
-    // const [selectTab,setSelectTab] = useState("/")
-    const [tab,setTab] = useState("")   // dùng để set line dưới tab đc chọn
+    const location = useLocation();
+    const [tab,setTab] = useState(location.pathname)   // dùng để set line dưới tab đc chọn
     const [widthWindow,setWidthWindow] = useState("")
     const firstLiRef = useRef(null);
     const refLine = useRef(null)
     const [shownav,setShownav] = useState(false)
     
-     const location = useLocation();
     
 
     const handelToggeNavbar = ()=>{ // đóng/ mở navbar 
@@ -53,6 +52,7 @@ const Header = ()=>{
         const activeTabElement = document.querySelector(
             `.list-nav a[href="${location.pathname}"]`
         );
+        console.log("local",location.pathname)
         if (activeTabElement) {
             setTab(activeTabElement);
         }
@@ -66,7 +66,7 @@ const Header = ()=>{
     return(
        <div className='header-page z-10 pt-1 pb-2 bg-white sticky top-0 left-0 w-full'>
 
-        {/* nav MOBILE */}
+           {/* nav MOBILE */}
            <div className={'containerNavbar  z-20 ' + `${ shownav ? "shownav" : ""}`} onClick={handelToggeNavbar}  >
                <div onClick={(e) => e.stopPropagation()} className='menuNavbar shadow-xl flex flex-col items-center  w-[40%] h-svh bg-[#fff]  z-30 absolute top-0'>
                     <img src="/logo.png" alt="" className='ml-2 pt-2 pb-2 mr-9 block w-[70%] md:w-[40%] md:inline'/>

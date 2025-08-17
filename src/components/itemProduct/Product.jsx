@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Product = (prop)=>{
     return(
-        <Link to={"/"} className="w-full h-full bg-white flex flex-col shadow-lg pb-1">
+        <Link to={"/"} className="hover:bg-blue-50 w-full h-full bg-white flex flex-col shadow-lg pb-1">
             <img 
                src="https://res.cloudinary.com/dpn2spmzo/image/upload/v1726758145/clothing-store/fcnrkgfwpr2psczxri37.jpg" 
                alt="" 
@@ -12,10 +12,10 @@ const Product = (prop)=>{
             />
            <div className="pl-2 pr-2 relative flex-1  ">
                 <p className="mt-2">{prop.name}</p>
-                <p className="flex justify-start items-end">
-                    <p className="text-[15px] line-through opacity-70">{prop.oldPrice}</p>
+                <div className="flex justify-start items-end">
+                    <h2 className="text-[15px] line-through opacity-70">{prop.oldPrice}</h2>
                      <h2 className="ml-2 text-[17px] font-semibold">{prop.price}</h2>
-                </p>
+                </div>
                 <div className="flex mt-2 items-center justify-between">
                    <p className="flex">
                         <FaStar className="text-yellow-400 text-[10px]"/>
