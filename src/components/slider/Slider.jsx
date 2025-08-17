@@ -7,7 +7,6 @@ import "./style.scss"
 import { memo } from 'react';
 
 const Slider  =(prop)=>{
-    console.log("re-render Slider")
     return (
         
          <Swiper
