@@ -1,11 +1,11 @@
 import {createBrowserRouter } from "react-router-dom";
-import Layout from "./pages/users/theme/masterLayout/Layout";
+import Layout from "./components/theme/masterLayout/Layout";
 import { ROUTER } from "./utils/router";
-import HomePage from "./pages/users/homePage/Home.jsx";
-import Product from "./pages/users/productPage/ProductPage";
-import ShirtPage from "./pages/users/shirtPage/ShirtPage";
-import TrousersPage from "./pages/users/trousersPage/TrousersPage";
-import NotificationPage from "./pages/users/notificationPage/NotificationPage";
+import HomePage from "./pages/public/homePage/Home.jsx";
+import Product from "./pages/public/productPage/ProductPage";
+import ShirtPage from "./pages/public/shirtPage/ShirtPage";
+import TrousersPage from "./pages/public/trousersPage/TrousersPage";
+import NotificationPage from "./pages/public/notificationPage/NotificationPage";
 
 export const router = createBrowserRouter([
     {
