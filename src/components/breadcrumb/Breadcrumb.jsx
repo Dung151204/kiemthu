@@ -1,51 +1,52 @@
-import { Link, useLocation } from "react-router-dom";
+// file: Breadcrumbs.jsx
+import React from "react";
+import { NavLink, useLocation, matchPath } from "react-router-dom";
+import { IoHomeOutline } from "react-icons/io5";
+import { ROUTER } from "../../utils/router"; // import đúng đường dẫn file ROUTER
 
-export default function Breadcrumb() {
+const breadcrumbNameMap = {
+  [ROUTER.PUBLIC.PRODUCT]: "Sản phẩm",
+  [ROUTER.PUBLIC.SHIRT]: "Áo",
+  [ROUTER.PUBLIC.TROUSERS]: "Quần",
+  [ROUTER.PUBLIC.NOTIFICATION]: "Thông báo",
+  [ROUTER.PUBLIC.DETAIL_PRODUCT]: "Chi tiết sản phẩm",
+};
+const Breadcrumbs = () => {
   const location = useLocation();
-  const paths = location.pathname.split("/").filter(Boolean); // bỏ chuỗi rỗng
+  const pathnames = location.pathname.split("/").filter((x) => x);
 
-  // Nếu đang ở trang chủ (paths rỗng) thì không render
-  if (paths.length === 0) {
+  // Nếu đang ở trang Home thì không hiển thị Breadcrumbs
+  if (location.pathname === ROUTER.PUBLIC.HOME) {
     return null;
   }
 
   return (
-    <nav className="bg-gray-100 py-2 px-4 rounded-md text-sm">
-      <ol className="flex items-center space-x-2">
-        {/* Trang chủ */}
-        <li>
-          <Link
-            to="/"
-            className="text-gray-600 hover:text-red-500 hover:underline"
-          >
-            Trang chủ
-          </Link>
-        </li>
+    <div className="mt-sm-3 ml-8">
+      <NavLink to={ROUTER.PUBLIC.HOME} className="font-medium text-decoration-none text-dark">
+        Home
+      </NavLink>
 
-        {/* Các path còn lại */}
-        {paths.map((path, index) => {
-          const fullPath = "/" + paths.slice(0, index + 1).join("/");
-          const name = decodeURIComponent(path)
-            .replace(/-/g, " ") // thay dấu - bằng khoảng trắng
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // viết hoa chữ đầu
+      {pathnames.map((value, index) => {
+        const to = `/${pathnames.slice(0, index + 1).join("/")}`;
 
-          return (
-            <li key={index} className="flex items-center space-x-2">
-              <span className="text-gray-400">/</span>
-              {index === paths.length - 1 ? (
-                <span className="text-gray-800 font-medium">{name}</span>
-              ) : (
-                <Link
-                  to={fullPath}
-                  className="text-gray-600 hover:text-red-500 hover:underline"
-                >
-                  {name}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+        const matchedRoute = Object.keys(breadcrumbNameMap).find((route) =>
+          matchPath({ path: route, end: true }, to)
+        );
+
+        if (!matchedRoute) return null;
+
+        return (
+          <span key={to}>
+            {" / "}
+            <NavLink to={to} className="text-decoration-none text-dark">
+              {breadcrumbNameMap[matchedRoute]}
+            </NavLink>
+          </span>
+        );
+      })}
+    </div>
   );
-}
+};
+
+
+export default Breadcrumbs;

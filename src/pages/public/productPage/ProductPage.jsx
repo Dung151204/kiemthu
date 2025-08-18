@@ -13,10 +13,9 @@ const productPage = ()=>{
                         setData(dt)
                         setLoading(false)
                     })
-             },3000)
+             },1000)
            return ()=>clearTimeout(timeoutID)
     },[])
-   console.log(loading)
     return (
         <div className="h-full flex">
             <FilterNavbar/>

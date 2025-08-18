@@ -13,6 +13,7 @@ const ListProduct = (prop)=>{
                      <p className=" mr-2">Bạn đang xem:</p>
                     <h2 className="font-medium text-blue-500">{prop.name}</h2>
                 </div>
+                
                 <select name="" id="" className="border border-black rounded-md pt-1 pb-1 pl-9 pr-9">
                     <option value="">Phổ biến</option>
                     <option value="">Bán chạy</option>
@@ -22,7 +23,7 @@ const ListProduct = (prop)=>{
             </div>
             {
                 prop.loading? <div className=" mt-10 w-full"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div> :
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                     {
                     prop.data?.products?.map((product)=>(
                         <div key={product.id}  className=" w-[100%]">

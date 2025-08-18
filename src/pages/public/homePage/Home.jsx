@@ -32,10 +32,8 @@ const listOufit = [
 ]
 
 const HomePage = ()=>{
-    const[datajson,setDatajson] = useState([])
-    const [dataProduct,setDataProduct] = useState([])
+    const [dataProduct,setDataProduct] = useState({})
     const [isPending,startTransition] = useTransition()
-    const [widthWindow,setWidthWindow] = useState("")
 
     useEffect(()=>{
        startTransition(() => {
@@ -45,14 +43,6 @@ const HomePage = ()=>{
             .catch((err) => console.error("Lỗi tải dữ liệu:", err));
             }
         );
-
-        // const handleResize = () => {
-        //     setWidthWindow(window.innerWidth);
-        // };
-        // window.addEventListener("resize", handleResize);
-        // return () => {
-        //     window.removeEventListener("resize", handleResize);
-        // };
     },[])
    
     return (
@@ -62,6 +52,7 @@ const HomePage = ()=>{
                 time = {5000}
                 autoPlay = {true}
                 slidesPerView = {1}
+                pagination={true}
              >
                 { listSliderImg.map((dataitem,index)=>(
                         <SwiperSlide key={index}><img className="w-full" src={dataitem} alt="" /></SwiperSlide>
@@ -79,6 +70,7 @@ const HomePage = ()=>{
                                 autoPlay = {true}
                                 slidesPerView = {4}
                                 spaceBetween={20}
+                                pagination={true}
                             >
                                 { dataProduct?.newProduct?.map((product)=>(
                                         <SwiperSlide key={product.id}>

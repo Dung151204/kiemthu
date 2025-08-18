@@ -6,17 +6,20 @@ import Product from "./pages/public/productPage/ProductPage";
 import ShirtPage from "./pages/public/shirtPage/ShirtPage";
 import TrousersPage from "./pages/public/trousersPage/TrousersPage";
 import NotificationPage from "./pages/public/notificationPage/NotificationPage";
+import DetailNotificationPage from "./pages/public/detailPage/detailNotification/detailNotificationPage";
+import DetailProductPage from "./pages/public/detailPage/detailProduct/DetailProductPage";
 
 export const router = createBrowserRouter([
     {
         path:"/",
         element:<Layout/>,
         children:[
-            {path:ROUTER.USER.HOME, element:<HomePage/>},
-            {path:ROUTER.USER.PRODUCT, element:<Product/>},
-            {path:ROUTER.USER.SHIRT, element:<ShirtPage/>},
-            {path:ROUTER.USER.TROUSERS, element:<TrousersPage/>},
-            {path:ROUTER.USER.NOTIFICATION, element:<NotificationPage/>},
+            {path:ROUTER.PUBLIC.HOME, element:<HomePage/>},
+            {path:ROUTER.PUBLIC.PRODUCT, element:<Product/>},
+            {path:ROUTER.PUBLIC.SHIRT, element:<ShirtPage/>},
+            {path:ROUTER.PUBLIC.TROUSERS, element:<TrousersPage/>},
+            {path:ROUTER.PUBLIC.NOTIFICATION, element:<NotificationPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_PRODUCT, element:<DetailProductPage/>},
         ]
     }
 ])

@@ -8,7 +8,7 @@ const FilterCategory = (prop)=>{
     const [isOpen,setIsOpen] = useState(false)
     return (
         <div className={`container-filter ${ isOpen ? `show`:``}`}>
-            <button onClick={()=>setIsOpen(!isOpen)}  className="flex items-center justify-start relative left-[30%] w-full p-2">
+            <button onClick={()=>setIsOpen(!isOpen)}  className="flex items-center justify-start w-full p-2">
                 <IoIosArrowForward className={`arrowFilter ${isOpen ? `arrowRote` : ``}`}/>
                 <p className="ml-2">{prop.name}</p>
             </button>

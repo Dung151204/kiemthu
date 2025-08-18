@@ -1,4 +1,5 @@
 
+import { memo } from "react";
 import FilterCategory from "./filterCategory/FilterCategory.jsx"
 import PriceRange from "./filterCategory/priceRange/PriceRange.jsx";
 
@@ -17,7 +18,7 @@ const products = [
 const sizes = ["XXL","XL","L","M","S","XS"]
 const FilterNavbar = ()=>{
     return (
-        <div className="w-[20%] min-h-[800px] shadow-xl overflow-y-auto">
+        <div className="hidden md:block w-[20%] min-h-[800px] shadow-xl overflow-y-auto">
          
                 <p className="w-full text-center p-2 font-medium">Danh mục</p>
                 <FilterCategory
@@ -25,7 +26,7 @@ const FilterNavbar = ()=>{
                 >
                     <ul>
                        {products.map((product,index)=>(
-                            <li key={index} className="flex w-full relative left-[40%] mt-1 mb-1">
+                            <li key={index} className="flex w-full ml-  mt-1 mb-1">
                                 <input type="checkbox" />
                                 <p className="ml-2">{product}</p>
                             </li>
@@ -63,4 +64,4 @@ const FilterNavbar = ()=>{
         </div>
     )
 }
-export default FilterNavbar
+export default memo(FilterNavbar)

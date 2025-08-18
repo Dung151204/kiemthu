@@ -1,10 +1,11 @@
 import { memo } from "react"
 import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { generatePath, Link } from "react-router-dom";
+import Button from "../button/Button";
 
 const Product = (prop)=>{
     return(
-        <Link to={"/"} className="hover:bg-blue-50 w-full h-full bg-white flex flex-col shadow-lg pb-1">
+        <Link to={generatePath("/detailProduct/:id",{id:1})} className="hover:bg-blue-50 w-full h-full bg-white flex flex-col shadow-lg pb-1">
             <img 
                src="https://res.cloudinary.com/dpn2spmzo/image/upload/v1726758145/clothing-store/fcnrkgfwpr2psczxri37.jpg" 
                alt="" 
@@ -26,7 +27,9 @@ const Product = (prop)=>{
                    </p>
                    <p className="text-[14px]">Đã bán 125</p>
                 </div>
-                <button className="border border-[#c23564] rounded hover:bg-[#c23564] hover:text-white bg-white text-[#c23564] p-1 pr-3 pl-3 float-right mt-3 mb-3 w-full md:w-[130px] hover:opacity-80">Thêm vào giỏ</button>
+                <Button 
+                    name = "Thêm vào giỏ"
+                />
            </div>
 
         </Link>

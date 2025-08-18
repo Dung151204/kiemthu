@@ -16,10 +16,10 @@ import { IoClose } from "react-icons/io5";
 
 const tabs = [
     { id: "1", namePage: "Trang chủ", icon: <AiOutlineHome />, href: "/" },
-    { id: "2", namePage: "Sản phẩm", icon: <RiShoppingBag3Line />, href: "/san-pham" },
-    { id: "3", namePage: "Áo", icon: <IoShirtOutline />, href: "/san-pham-ao" },
-    { id: "4", namePage: "Quần", icon: <PiPants />, href: "/san-pham-quan" },
-    { id: "5", namePage: "Thông báo", icon: <FiBell />, href: "/thong-bao" },
+    { id: "2", namePage: "Sản phẩm", icon: <RiShoppingBag3Line />, href: "/product" },
+    { id: "3", namePage: "Áo", icon: <IoShirtOutline />, href: "/productShirt" },
+    { id: "4", namePage: "Quần", icon: <PiPants />, href: "/productTrousers" },
+    { id: "5", namePage: "Thông báo", icon: <FiBell />, href: "/notification" },
 ];
 
 
@@ -30,7 +30,7 @@ const Header = ()=>{
     const firstLiRef = useRef(null);
     const refLine = useRef(null)
     const [shownav,setShownav] = useState(false)
-    
+  
     
 
     const handelToggeNavbar = ()=>{ // đóng/ mở navbar 
@@ -48,18 +48,18 @@ const Header = ()=>{
 
     useEffect(()=>{  
        window.scrollTo(0, 0);
-
+          let currentTab = tab;
         const activeTabElement = document.querySelector(
             `.list-nav a[href="${location.pathname}"]`
         );
-        console.log("local",location.pathname)
         if (activeTabElement) {
             setTab(activeTabElement);
+            currentTab = activeTabElement
         }
-        
         const line = refLine.current
-        line.style.left = tab === "" ? firstLiRef.current?.offsetLeft + "px" : activeTabElement.offsetLeft + "px";
-        line.style.width = tab === "" ? firstLiRef.current?.offsetWidth + "px" : activeTabElement.offsetWidth + "px";
+        line.style.left = tab === "" ? firstLiRef.current?.offsetLeft + "px" : currentTab?.offsetLeft + "px";
+        line.style.width = tab === "" ? firstLiRef.current?.offsetWidth + "px" : currentTab?.offsetWidth + "px";
+        
     },[location.pathname,widthWindow])
 
     
