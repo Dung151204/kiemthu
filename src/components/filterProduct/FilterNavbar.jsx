@@ -24,7 +24,7 @@ const FilterNavbar = ()=>{
                 <FilterCategory
                    name = "Sản phẩm"
                 >
-                    <ul>
+                    <ul className="ml-5">
                        {products.map((product,index)=>(
                             <li key={index} className="flex w-full ml-  mt-1 mb-1">
                                 <input type="checkbox" />
@@ -37,6 +37,7 @@ const FilterNavbar = ()=>{
                    name = "Giá"
                 >
                     <PriceRange/>
+                   <input type="range" onChange={(e)=>console.log(e.target.value)} className="w-[90%]"/>
                    <div className="flex items-center justify-end mr-3 mt-4 ">
                     <p className="mr-2">Sắp xếp</p>
                     <select name="" id="" className="rounded-md pl-2 pr-2 border border-solid border-[#ccc] ">
@@ -49,11 +50,11 @@ const FilterNavbar = ()=>{
                  <FilterCategory
                    name = "Size"
                 >
-                    <ul className="">
+                    <ul className="ml-5">
                      
                        {
                        sizes.map((size,index)=>(
-                         <li key={index} className="flex w-full relative left-[40%] mt-1 mb-1">
+                         <li key={index} className="flex w-full mb-1">
                             <input type="checkbox" />
                             <p className="ml-2">{size}</p>
                         </li>

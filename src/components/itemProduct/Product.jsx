@@ -29,6 +29,7 @@ const Product = (prop)=>{
                 </div>
                 <Button 
                     name = "Thêm vào giỏ"
+                    style = "p-1 pr-3 pl-3 float-right mt-3 mb-3 text-[#ff0000] hover:bg-[#ff0000] hover:text-white"
                 />
            </div>
 

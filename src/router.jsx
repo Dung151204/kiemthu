@@ -9,6 +9,7 @@ import NotificationPage from "./pages/public/notificationPage/NotificationPage";
 import DetailNotificationPage from "./pages/public/detailPage/detailNotification/detailNotificationPage";
 import DetailProductPage from "./pages/public/detailPage/detailProduct/DetailProductPage";
 
+
 export const router = createBrowserRouter([
     {
         path:"/",
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
             {path:ROUTER.PUBLIC.TROUSERS, element:<TrousersPage/>},
             {path:ROUTER.PUBLIC.NOTIFICATION, element:<NotificationPage/>},
             {path:ROUTER.PUBLIC.DETAIL_PRODUCT, element:<DetailProductPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_NOTIFICATION, element:<DetailNotificationPage/>},
         ]
     }
 ])

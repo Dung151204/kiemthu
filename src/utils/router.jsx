@@ -5,6 +5,7 @@ export const ROUTER = {
         SHIRT :"/productShirt",
         TROUSERS:"/productTrousers",
         NOTIFICATION:"/notification",
-        DETAIL_PRODUCT:"/detailProduct/:id"
+        DETAIL_PRODUCT:"/detailProduct/:id",
+        DETAIL_NOTIFICATION:"/detailNotification/:id"
     }
 }

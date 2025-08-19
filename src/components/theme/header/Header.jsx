@@ -23,7 +23,7 @@ const tabs = [
 ];
 
 
-const Header = ()=>{
+const Header = ({setShowLogin})=>{
     const location = useLocation();
     const [tab,setTab] = useState(location.pathname)   // dùng để set line dưới tab đc chọn
     const [widthWindow,setWidthWindow] = useState("")
@@ -64,7 +64,7 @@ const Header = ()=>{
 
     
     return(
-       <div className='header-page z-10 pt-1 pb-2 bg-white sticky top-0 left-0 w-full'>
+       <div className='header-page z-10 pt-1 pb-2 bg-white sticky top-0 left-0 w-full relative'>
 
            {/* nav MOBILE */}
            <div className={'containerNavbar  z-20 ' + `${ shownav ? "shownav" : ""}`} onClick={handelToggeNavbar}  >
@@ -72,7 +72,7 @@ const Header = ()=>{
                     <img src="/logo.png" alt="" className='ml-2 pt-2 pb-2 mr-9 block w-[70%] md:w-[40%] md:inline'/>
                     <ul className='w-full'>
                         {tabs.map((itemTab)=>(
-                            <li className='w-full font-medium hover:text-[#bf4040]' key={itemTab.id}>
+                            <li className='w-full font-medium hover:text-[#ff0000]' key={itemTab.id}>
                                 <Link  to={itemTab.href} 
                                     className='w-full flex items-center p-3 pl-6' 
                                     // ref={itemTab.id === "1" ? firstLiRef : null } 
@@ -80,7 +80,7 @@ const Header = ()=>{
                                         // setSelectTab(itemTab.id);
                                         setShownav(!shownav)
                                     }} 
-                                    style={location.pathname===itemTab.href ? {backgroundColor:"#eee", color:"#bf4040"}:{}}
+                                    style={location.pathname===itemTab.href ? {backgroundColor:"#eee", color:"#ff0000"}:{}}
                                 >
                                         <span className='mr-2 relative top-[0.9px] text-[18px]'> {itemTab.icon}</span>
                                          {itemTab.namePage}  
@@ -88,7 +88,7 @@ const Header = ()=>{
                             </li>
                         ))}
                     </ul>
-                    <div className='text-[16px] font-medium absolute bottom-0 bg-[#bf4040] w-full text-center text-white p-3'>Đăng kí</div>
+                    <div className='text-[16px] font-medium absolute bottom-0 bg-[#ff0000] w-full text-center text-white p-3'>Đăng kí</div>
                     <IoClose className='absolute top-3 right-1 text-[24px] hover:cursor-pointer hover:bg-[#ccc]' onClick={handelToggeNavbar}/>
                 </div>
            </div>
@@ -114,8 +114,8 @@ const Header = ()=>{
                     </div>
                     <div className='info-login-heading flex items-center'>
                     <div className='hidden sm:flex '>
-                            <Link to='/' className='block w-[88px]'>Đăng nhập |</Link>
-                            <Link to='/' className='ml-2 block w-[86px]'>Đăng kí</Link>
+                            <p to='/' onClick={()=>setShowLogin(true)} className='block w-[88px] cursor-pointer hover:text-blue-400'>Đăng nhập |</p>
+                            <p to='/' className='ml-2 block w-[86px]'>Đăng kí</p>
                     </div>
                         {/* <div className='profile-heading flex items-center hidden md:flex'>
                             <img src='/avt.jpg'  className='avt-profile size-8  '/>
