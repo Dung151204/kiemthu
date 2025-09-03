@@ -1,51 +1,32 @@
-import { Link, useLocation } from "react-router-dom";
+// file: Breadcrumbs.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
 
-export default function Breadcrumb() {
-  const location = useLocation();
-  const paths = location.pathname.split("/").filter(Boolean); // bỏ chuỗi rỗng
 
-  // Nếu đang ở trang chủ (paths rỗng) thì không render
-  if (paths.length === 0) {
-    return null;
-  }
+const Breadcrumbs = (prop) => {
+  return(
+    <div className="h-[34px] bg-[#eee]">
+        <div className="w-[90%] h-[34px] m-auto flex items-center">
+            <Link to={"/"} className="font-medium  text-blue-600">
+               Home
+            </Link>
+            {
+              prop?.parentPages?.map((page,index)=>(
+                <div key={index} className="flex items-center">
+                  <IoIosArrowForward className="text-[14px] relative top-[1px] ml-1 mr-1"/>
+                  <Link className="font-medium " to={page.path}>{page.nameParent}</Link>
+                </div>
+              ))
+            }
+            <IoIosArrowForward className="text-[14px] relative top-[1px] ml-1 mr-1"/>
+            <Link className="font-medium ">
+              {prop.nameCurrent}
+            </Link>
+        </div>
+    </div>
+  )
+};
 
-  return (
-    <nav className="bg-gray-100 py-2 px-4 rounded-md text-sm">
-      <ol className="flex items-center space-x-2">
-        {/* Trang chủ */}
-        <li>
-          <Link
-            to="/"
-            className="text-gray-600 hover:text-red-500 hover:underline"
-          >
-            Trang chủ
-          </Link>
-        </li>
 
-        {/* Các path còn lại */}
-        {paths.map((path, index) => {
-          const fullPath = "/" + paths.slice(0, index + 1).join("/");
-          const name = decodeURIComponent(path)
-            .replace(/-/g, " ") // thay dấu - bằng khoảng trắng
-            .replace(/\b\w/g, (char) => char.toUpperCase()); // viết hoa chữ đầu
-
-          return (
-            <li key={index} className="flex items-center space-x-2">
-              <span className="text-gray-400">/</span>
-              {index === paths.length - 1 ? (
-                <span className="text-gray-800 font-medium">{name}</span>
-              ) : (
-                <Link
-                  to={fullPath}
-                  className="text-gray-600 hover:text-red-500 hover:underline"
-                >
-                  {name}
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
-  );
-}
+export default Breadcrumbs;

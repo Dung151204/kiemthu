@@ -1,9 +1,17 @@
 export const ROUTER = {
-    USER : {
+    PUBLIC : {
         HOME: "/",
-        PRODUCT :"/san-pham",
-        SHIRT :"/san-pham-ao",
-        TROUSERS:"/san-pham-quan",
-        NOTIFICATION:"/thong-bao"
+        PRODUCT :"/product",
+        SHIRT :"/productShirt",
+        TROUSERS:"/productTrousers",
+        NOTIFICATION:"/notification",
+        DETAIL_PRODUCT:"/detailProduct/:slug",
+        DETAIL_NOTIFICATION:"/detailNotification/:id",
+        DETAIL_CART:"/detailCart",
+        ORDER : "/orderProduct",
+    },
+    USER:{
+        HISTORY : "/history-buy",
+        PROFILE :"/profile"
     }
 }

@@ -1,22 +1,34 @@
 import {createBrowserRouter } from "react-router-dom";
-import Layout from "./pages/users/theme/masterLayout/Layout";
+import Layout from "./components/theme/masterLayout/Layout";
 import { ROUTER } from "./utils/router";
-import HomePage from "./pages/users/homePage/Home.jsx";
-import Product from "./pages/users/productPage/ProductPage";
-import ShirtPage from "./pages/users/shirtPage/ShirtPage";
-import TrousersPage from "./pages/users/trousersPage/TrousersPage";
-import NotificationPage from "./pages/users/notificationPage/NotificationPage";
+import HomePage from "./pages/public/homePage/Home.jsx";
+import Product from "./pages/public/productPage/ProductPage";
+import ShirtPage from "./pages/public/shirtPage/ShirtPage";
+import TrousersPage from "./pages/public/trousersPage/TrousersPage";
+import NotificationPage from "./pages/public/notificationPage/NotificationPage";
+import DetailNotificationPage from "./pages/public/detailPage/detailNotification/detailNotificationPage";
+import DetailProductPage from "./pages/public/detailPage/detailProduct/DetailProductPage";
+import DetailCart from "./pages/public/detailPage/detailCart/DetailCart";
+import OrderPage from "./pages/public/orderPage/OrderPage";
+import HistoryPage from "./pages/user/historyBuy/HistoryBuyPage";
+import ProfilePage from "./pages/user/profilePage/ProfilePage";
 
 export const router = createBrowserRouter([
     {
         path:"/",
         element:<Layout/>,
         children:[
-            {path:ROUTER.USER.HOME, element:<HomePage/>},
-            {path:ROUTER.USER.PRODUCT, element:<Product/>},
-            {path:ROUTER.USER.SHIRT, element:<ShirtPage/>},
-            {path:ROUTER.USER.TROUSERS, element:<TrousersPage/>},
-            {path:ROUTER.USER.NOTIFICATION, element:<NotificationPage/>},
+            {path:ROUTER.PUBLIC.HOME, element:<HomePage/>},
+            {path:ROUTER.PUBLIC.PRODUCT, element:<Product/>},
+            {path:ROUTER.PUBLIC.SHIRT, element:<ShirtPage/>},
+            {path:ROUTER.PUBLIC.TROUSERS, element:<TrousersPage/>},
+            {path:ROUTER.PUBLIC.NOTIFICATION, element:<NotificationPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_PRODUCT, element:<DetailProductPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_NOTIFICATION, element:<DetailNotificationPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_CART, element:<DetailCart/>},
+            {path:ROUTER.PUBLIC.ORDER, element:<OrderPage/>},
+            {path:ROUTER.USER.HISTORY, element:<HistoryPage/>},
+            {path:ROUTER.USER.PROFILE, element:<ProfilePage/>},
         ]
     }
 ])
