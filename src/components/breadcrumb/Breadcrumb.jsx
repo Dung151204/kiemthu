@@ -1,51 +1,31 @@
 // file: Breadcrumbs.jsx
 import React from "react";
-import { NavLink, useLocation, matchPath } from "react-router-dom";
-import { IoHomeOutline } from "react-icons/io5";
-import { ROUTER } from "../../utils/router"; // import đúng đường dẫn file ROUTER
+import { Link } from "react-router-dom";
+import { IoIosArrowForward } from "react-icons/io";
 
-const breadcrumbNameMap = {
-  [ROUTER.PUBLIC.PRODUCT]: "Sản phẩm",
-  [ROUTER.PUBLIC.SHIRT]: "Áo",
-  [ROUTER.PUBLIC.TROUSERS]: "Quần",
-  [ROUTER.PUBLIC.NOTIFICATION]: "Thông báo",
-  [ROUTER.PUBLIC.DETAIL_PRODUCT]: "Chi tiết sản phẩm",
-};
-const Breadcrumbs = () => {
-  const location = useLocation();
-  const pathnames = location.pathname.split("/").filter((x) => x);
 
-  // Nếu đang ở trang Home thì không hiển thị Breadcrumbs
-  if (location.pathname === ROUTER.PUBLIC.HOME) {
-    return null;
-  }
-
-  return (
-    <div className="mt-sm-3 ml-8">
-      <NavLink to={ROUTER.PUBLIC.HOME} className="font-medium text-decoration-none text-dark">
-        Home
-      </NavLink>
-
-      {pathnames.map((value, index) => {
-        const to = `/${pathnames.slice(0, index + 1).join("/")}`;
-
-        const matchedRoute = Object.keys(breadcrumbNameMap).find((route) =>
-          matchPath({ path: route, end: true }, to)
-        );
-
-        if (!matchedRoute) return null;
-
-        return (
-          <span key={to}>
-            {" / "}
-            <NavLink to={to} className="text-decoration-none text-dark">
-              {breadcrumbNameMap[matchedRoute]}
-            </NavLink>
-          </span>
-        );
-      })}
+const Breadcrumbs = (prop) => {
+  return(
+    <div className="h-[34px] bg-[#eee]">
+        <div className="w-[90%] h-[34px] m-auto flex items-center">
+            <Link to={"/"} className="font-medium  text-blue-600">
+               Home
+            </Link>
+            {
+              prop?.parentPages?.map((page,index)=>(
+                <div key={index} className="flex items-center">
+                  <IoIosArrowForward className="text-[14px] relative top-[1px] ml-1 mr-1"/>
+                  <Link className="font-medium " to={page.path}>{page.nameParent}</Link>
+                </div>
+              ))
+            }
+            <IoIosArrowForward className="text-[14px] relative top-[1px] ml-1 mr-1"/>
+            <Link className="font-medium ">
+              {prop.nameCurrent}
+            </Link>
+        </div>
     </div>
-  );
+  )
 };
 
 

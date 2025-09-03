@@ -1,26 +1,38 @@
 import { generatePath, Link } from "react-router-dom"
-import { vanchuyen,baomat,doitra,tamnhin } from "../../../assets/index"
+import { Breadcrumb } from "../../../components/index"
+import { useEffect, useState } from "react"
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
 const NotificationPage = ()=>{
+    const [dataNoti,setDataNoti] = useState([])
+    const [isLoading,setIsLoading] = useState(true)
+    useEffect(()=>{
+        fetch("/api/blog")
+        .then((res)=>res.json())
+        .then((dt)=>{
+            setDataNoti(dt.data)
+            setIsLoading(false)
+        })
+    },[])
     return (
-        <div className="p-10 flex flex-wrap justify-around w-full">
-            
-             <Link to={generatePath("/detailNotification/:id",{id:1})} className=" w-[400px] h-[280px] overflow-hidden rounded-lg shadow-xl">
-                <img className="h-[90%] w-full" src={baomat} alt="" />
-                <p className="text-center uppercase">chính sách bảo mật</p>
-            </Link>
-              <Link to={generatePath("/detailNotification/:id",{id:2})} className=" w-[400px] h-[280px] overflow-hidden rounded-lg shadow-xl">
-                <img className="h-[90%] w-full" src={vanchuyen} alt="" />
-                <p className="text-center uppercase">chính sách vận chuyển</p>
-            </Link>
-              <Link to={generatePath("/detailNotification/:id",{id:3})} className=" w-[400px] h-[280px] overflow-hidden rounded-lg shadow-xl">
-                <img className="h-[90%] w-full" src={doitra} alt="" />
-                <p className="text-center uppercase">chính sách đổi trả</p>
-            </Link>
-            <Link to={generatePath("/detailNotification/:id",{id:4})} className=" w-[400px] h-[280px] overflow-hidden rounded-lg shadow-xl ">
-                <img className="h-[90%] w-full" src={tamnhin} alt="" />
-                <p className="text-center uppercase">Tầm nhìn của Torano</p>
-            </Link>
-             
+        <div>
+            <Breadcrumb nameCurrent = "Thông báo"/>
+           {
+            isLoading ? 
+                <div className=" mt-10 w-full mb-10"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div>
+                :
+                <div className="gap-2 flex flex-wrap justify-center w-full">
+                {
+                    dataNoti.map(noti=>(
+                        
+                        <Link key={noti._id} to={generatePath("/detailNotification/:id",{id:noti._id})} className=" w-[400px] h-[280px] overflow-hidden rounded-lg shadow-xl">
+                            <img className="h-[90%] w-full" src={noti.image} alt="" />
+                            <p className="text-center uppercase">{noti.title}</p>
+                        </Link>
+                
+                    ))
+                }
+                </div>
+            }
         </div>
     )
 }

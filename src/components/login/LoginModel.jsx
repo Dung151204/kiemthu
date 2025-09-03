@@ -1,9 +1,9 @@
 import { IoCloseSharp } from "react-icons/io5";
 import "./style.scss"
-const LoginModel = ({setShowLogin,showLogin})=>{
+const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
     return (
-        <div onClick={()=>setShowLogin(false)} className=" bg-[#a19a9a56] absolute top-0 bottom-0 left-0 right-0 z-50 ">
-            <div onClick={(e)=>{e.stopPropagation()  }} className={ `${showLogin===true ? " show " : ""} modelLogin relative shadow-xl rounded-lg w-[40%] min-h-[500px] bg-white m-auto mt-10 pl-3 pr-3`}>
+        <div onClick={()=>setShowLogin(false)} className=" bg-[#a19a9a56] absolute top-0 bottom-0 left-0 right-0 z-50 flex justify-center">
+            <div onClick={(e)=>{e.stopPropagation()  }} className={ `${showLogin===true ? " show " : ""} modelLogin fixed shadow-xl rounded-lg w-[40%] min-h-[500px] bg-white m-auto mt-10 pl-3 pr-3`}>
                   <h2 className=" text-center p-4 text-[30px] font-bold text-blue-700 uppercase">Đăng Nhập</h2>
                   <div className=" flex flex-col">
                         <span className="mt-3 mb-2 font-medium">Email / Số điện thoại</span>
@@ -18,8 +18,8 @@ const LoginModel = ({setShowLogin,showLogin})=>{
                   </div>
                   <div className="flex justify-around mt-10">
                      <p>Quên mật khẩu</p>
-                     <p>Bạn chưa có tài khoản
-                        <a> Đăng kí</a>
+                     <p>Bạn chưa có tài khoản ?
+                        <span onClick={()=>{setShowRegister(true); setShowLogin(false) }} className="underline text-blue-400 cursor-pointer"> Đăng kí</span>
                      </p>
                   </div>
                 <IoCloseSharp onClick={()=>setShowLogin(false)} className="absolute top-2 right-2 text-[24px] hover:bg-red-500 hover:cursor-pointer"/>

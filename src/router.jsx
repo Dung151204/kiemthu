@@ -8,7 +8,10 @@ import TrousersPage from "./pages/public/trousersPage/TrousersPage";
 import NotificationPage from "./pages/public/notificationPage/NotificationPage";
 import DetailNotificationPage from "./pages/public/detailPage/detailNotification/detailNotificationPage";
 import DetailProductPage from "./pages/public/detailPage/detailProduct/DetailProductPage";
-
+import DetailCart from "./pages/public/detailPage/detailCart/DetailCart";
+import OrderPage from "./pages/public/orderPage/OrderPage";
+import HistoryPage from "./pages/user/historyBuy/HistoryBuyPage";
+import ProfilePage from "./pages/user/profilePage/ProfilePage";
 
 export const router = createBrowserRouter([
     {
@@ -22,6 +25,10 @@ export const router = createBrowserRouter([
             {path:ROUTER.PUBLIC.NOTIFICATION, element:<NotificationPage/>},
             {path:ROUTER.PUBLIC.DETAIL_PRODUCT, element:<DetailProductPage/>},
             {path:ROUTER.PUBLIC.DETAIL_NOTIFICATION, element:<DetailNotificationPage/>},
+            {path:ROUTER.PUBLIC.DETAIL_CART, element:<DetailCart/>},
+            {path:ROUTER.PUBLIC.ORDER, element:<OrderPage/>},
+            {path:ROUTER.USER.HISTORY, element:<HistoryPage/>},
+            {path:ROUTER.USER.PROFILE, element:<ProfilePage/>},
         ]
     }
 ])

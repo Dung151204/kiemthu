@@ -6,13 +6,13 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { BsBoxSeam } from "react-icons/bs";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { HiOutlineCreditCard } from "react-icons/hi2";
-import {slider1,slider2,slider3,slider4,fullset1,fullset2,fullset3} from "../../../assets/index.jsx"
+import {slider1,slider2,slider3,slider4,slider5,fullset1,fullset2,fullset3} from "../../../assets/index.jsx"
 import { Slider , Product } from "../../../components/index.jsx"
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 
 
 
-const listSliderImg = [slider1,slider2,slider3,slider4]
-// const data  = [1,2,3,4,5,6,7,8]
+const listSliderImg = [slider5,slider2,slider3,slider4,slider1]
 const listOufit = [
     {
         id:1,
@@ -33,16 +33,21 @@ const listOufit = [
 
 const HomePage = ()=>{
     const [dataProduct,setDataProduct] = useState({})
-    const [isPending,startTransition] = useTransition()
+   const [loading,setLoading] = useState(true)
+
 
     useEffect(()=>{
-       startTransition(() => {
-            fetch("/data.json")
-            .then((res) => res.json())
-            .then((dt) => setDataProduct(dt))
-            .catch((err) => console.error("Lỗi tải dữ liệu:", err));
-            }
-        );
+         fetch("/api/product")
+                    .then((res)=>res.json())
+                    .then((dt)=>{
+                        setDataProduct(dt.data)
+                        setLoading(false)
+                    })
+                    .catch((err) => {
+                        console.error("Fetch error:", err);
+                        setLoading(false);
+                    }
+                );
     },[])
    
     return (
@@ -63,6 +68,9 @@ const HomePage = ()=>{
              <div className="container w-[90%] min-h-[800px] m-auto ">
                    <div className="contentProduct pt-[20px]">
                        <h2 className="title tracking-widest uppercase w-full text-center underline text-[20px] mt-10">Top sản phẩm tuần</h2>
+                      {loading ?
+                       <div className=" mt-10 w-full"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div>
+                        :
                        <div className='mt-5'>
                            <Slider
                                 className = 'w-[80%] h-[416px] '
@@ -72,39 +80,45 @@ const HomePage = ()=>{
                                 spaceBetween={20}
                                 pagination={true}
                             >
-                                { dataProduct?.newProduct?.map((product)=>(
-                                        <SwiperSlide key={product.id}>
+                                { dataProduct?.map((product)=>(
+                                        <SwiperSlide key={product._id}>
                                             <div className=" w-[240px]">
                                                <Product
-                                                  name={product.name}
+                                                 id = {product._id}
+                                                 slug = {product.slug}
+                                                  name={product.title}
                                                   price={product.price}
-                                                  img = {product.image}
+                                                  img = {product?.options[0]?.images[0]}
                                                   oldPrice = {product.oldPrice}
                                                />
                                             </div>
                                         </SwiperSlide>
                                     ))}
                             </Slider>
-                       </div>
+                       </div>}
                    </div>
                    {/* danh mục sản phẩm */}
                    <div className='contentProduct relative'>
                        <h2 className="title tracking-widest uppercase w-full text-center underline text-[20px] mt-10 ">danh mục sản phẩm</h2>
-                       <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8'> 
-                            {isPending ? 
-                            <h2 className='text-[100px]'>Loading</h2> : 
-                            dataProduct?.products?.slice(0, 8).map((product)=>(
-                                <div key={product.id}  className=" w-[100%]">
-                                    <Product
-                                        name={product.name}
-                                         price={product.price}
-                                         img = {product.image}
-                                         oldPrice = {product.oldPrice}
-                                    />
+                            {loading ? 
+                            <div className=" mt-10 w-full "><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div>
+                             : 
+                                <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-8'> 
+                                       { dataProduct?.slice(0, 8).map((product)=>(
+                                            <div key={product._id}  className=" w-[100%]">
+                                                <Product
+                                                    id ={product._id}
+                                                    slug = {product.slug}
+                                                    name={product.title}
+                                                    price={product.price}
+                                                    img = {product?.options[0]?.images[0]}
+                                                    oldPrice = {product.oldPrice}
+                                                />
+                                            </div>
+                                        ))}
                                 </div>
-                            ))}
-                       </div>
-                       <Link to={"/san-pham"} className='mt-8 absolute right-0 top-0 hover:cursor-pointer hover:text-[#c23564] hover:underline'>Xem thêm sản phẩm</Link>
+                                }
+                       <Link to={"/product"} className='mt-8 absolute right-0 top-0 hover:cursor-pointer hover:text-[#c23564] underline font-thin'>Xem thêm sản phẩm</Link>
                    </div>
                    <div className='containerProduct mb-10'>
                        <h2 className="title tracking-widest uppercase w-full text-center underline text-[20px] mt-10 mb-6">Outfit of the day</h2>
