@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { validateForm } from "./validateForm";
 import { useToast } from "../../components/toastMessage/ToastMessage";
 import { useDispatch } from "react-redux";
-import cartSlice from "../../redux/cartSlice"
+import guestCartSlice from "../../redux/guestCartSlice"
 import authSlice from "../../redux/authSlice";
+import { fetchCart } from "../../redux/userCartSlice";
 
 
 const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
@@ -15,6 +16,7 @@ const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
     const [validate,setValidate] = useState({})
     const {showToast} = useToast()
     const dispatch = useDispatch()
+
     const handelLogin  = async ()=>{
         const validate = validateForm({email,password}," ")
         setValidate(validate)
@@ -30,6 +32,8 @@ const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
                         role: dataServer.data.user.role,
                     })
                 );
+
+                dispatch(fetchCart(dataServer.data.accessToken))
 
                 setShowLogin(false);
             } catch (err) {

@@ -1,4 +1,4 @@
-export const getOrderByUserApi= async(token)=>{
+export const getOrderByUserApi= async(token)=>{     //Lấy thông tin mà user đã đặt hàng
     const res =await fetch("/api/order/getorderByUser",{
             method:"GET",
             headers:{

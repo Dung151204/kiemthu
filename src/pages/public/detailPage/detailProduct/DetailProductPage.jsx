@@ -15,7 +15,7 @@ import {Button} from "../../../../components/index.jsx"
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { getApiDetailProduct } from "../../../../service/productApiService";
 import { useDispatch } from "react-redux";
-import cartSlice from "../../../../redux/cartSlice";
+import guestCartSlice from "../../../../redux/guestCartSlice";
 import { useToast } from "../../../../components/toastMessage/ToastMessage";
 
 const DetailProductPage = ()=>{
@@ -81,7 +81,7 @@ const DetailProductPage = ()=>{
         }
         else{
             showToast("Thêm sản phẩm thành công vào giỏ")
-            dispatch(cartSlice.actions.addProduct(
+            dispatch(guestCartSlice.actions.addProduct(
                 {
                     id : dataProduct._id,
                     slug : slug,

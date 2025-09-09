@@ -5,18 +5,18 @@ import { chitiet1 } from "../../../assets/index";
 import { useState } from "react";
 import { Button } from "../../../components/index";
 import { useSelector,useDispatch } from "react-redux";
-import cartSlice from "../../../redux/cartSlice";
-import {SelectProductCart} from "../../../redux/selector";
+import guestCartSlice from "../../../redux/guestCartSlice";
+import {SelectGuestCart} from "../../../redux/selector";
 import { useToast } from "../../../components/toastMessage/ToastMessage";
 
 
 const OrderPage = ()=>{
     const {showToast} = useToast()
     const dispatch = useDispatch()
-    const listProductCart = useSelector(SelectProductCart)
+    const listProductCart = useSelector(SelectGuestCart)
      const handelQuatity = (e,data)=>{
           if(data.quantity !== 1){
-            dispatch(cartSlice.actions.updateProduct(
+            dispatch(guestCartSlice.actions.updateProduct(
                 {
                     id:data.id,
                     color:data.color,
@@ -33,7 +33,7 @@ const OrderPage = ()=>{
     
     const handelRemoveProduct = (e,data)=>{
       
-            dispatch(cartSlice.actions.removeProduct({
+            dispatch(guestCartSlice.actions.removeProduct({
                 id:data.id,
                 color:data.color,
                 size:data.size,

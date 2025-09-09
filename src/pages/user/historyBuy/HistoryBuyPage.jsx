@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAccessTokenApiUser } from "../../../service/userApiService";
+import { getAccessTokenApiUser,addToCartUserApi } from "../../../service/userApiService";
 import { getOrderByUserApi } from "../../../service/orderApiService";
 import { useSelector } from "react-redux";
 import { SelectUser } from "../../../redux/selector";
@@ -34,6 +34,18 @@ const HistoryPage = ()=>{
       }
       console.log("dung effec")
       fetchApi()
+
+      // const addCartUser = async()=>{
+      //   const data = await addToCartUserApi({
+      //        "id": "66ebeeb27c9dabee5de0eaf4",
+      //         "quantity": 1,
+      //         "color": "trắng",
+      //         "size": "M",
+      //         "price": 179000
+      //   },dataUser.accessToken)
+      //   console.log("dataCartUser : ",data)
+      // }
+      // addCartUser()
     },[])
     return (
         <div>

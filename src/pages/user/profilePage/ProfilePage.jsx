@@ -26,7 +26,7 @@ const ProfilePage = ()=>{
         const fetchUser = async () => {
             try {
                 const data = await getApiUserCurrent(dataUser.accessToken); // chờ Promise resolve
-                console.log("dataUserSever", data)
+                console.log("dataUserCurrentSever", data)
             } catch (err) {
                 console.error(err,"lỗi lấy DL user");
             }

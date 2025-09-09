@@ -18,9 +18,9 @@ import { chitiet1,avatar } from '../../../assets/index';
 import { MdDeleteOutline } from "react-icons/md";
 import CartProduct from '../../../components/cartProduct/CartProduct';
 import { useSelector,useDispatch } from 'react-redux';
-import cartSlice from '../../../redux/cartSlice';
+import guestCartSlice from '../../../redux/guestCartSlice';
 import authSlice from '../../../redux/authSlice';
-import { SelectProductCart,SelectUser } from '../../../redux/selector';
+import { SelectGuestCart,SelectUser, SelectUserCart } from '../../../redux/selector';
 import { logoutApiUser } from '../../../service/userApiService';
 import { useToast } from '../../../components/toastMessage/ToastMessage';
 const tabs = [
@@ -43,8 +43,8 @@ const Header = ({setShowLogin,setShowRegister})=>{
     const [showCart,setShowCart] = useState(false)
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const listProductCar = useSelector(SelectProductCart)
     const dataUser = useSelector(SelectUser)
+    const listProductCar =dataUser.role === "user" || dataUser.role === "admin" ? useSelector(SelectUserCart) : useSelector(SelectGuestCart)
 
     const handelToggeNavbar = ()=>{ // đóng/ mở navbar 
         setShownav(!shownav)
@@ -152,7 +152,7 @@ const Header = ({setShowLogin,setShowRegister})=>{
                 <div className='flex flex-1 justify-around items-center'>
                     {/* input tìm kiếm */}
                     <div className='search-heading w-[70%] md:w-[50%] lg:w-[40%] ml-2'>
-                        <input value={""} className='input-search' type="text" placeholder='Bạn cần tìm gì ?' />
+                        <input className='input-search' type="text" placeholder='Bạn cần tìm gì ?' />
                         <div className='icon-search flex justify-center items-center'>
                             <IoIosSearch className='w-full' />
                         </div>

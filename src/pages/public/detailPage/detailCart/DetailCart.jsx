@@ -8,17 +8,17 @@ import { chitiet1 } from "../../../../assets/index"
 import { MdDeleteOutline } from "react-icons/md";
 import  {Button} from "../../../../components/index";
 import { useDispatch,useSelector } from "react-redux";
-import { SelectProductCart } from "../../../../redux/selector";
-import cartSlice from "../../../../redux/cartSlice";
+import { SelectGuestCart } from "../../../../redux/selector";
+import guestCartSlice from "../../../../redux/guestCartSlice";
 import { useToast } from "../../../../components/toastMessage/ToastMessage";
 
 const DetailCart = ()=>{
     const dispatch = useDispatch()
     const {showToast} = useToast()
-    const listProductCart = useSelector(SelectProductCart)
+    const listProductCart = useSelector(SelectGuestCart)
     const handelQuatity = (e,data)=>{
           if(data.quantity !== 1){
-            dispatch(cartSlice.actions.updateProduct(
+            dispatch(guestCartSlice.actions.updateProduct(
                 {
                     id:data.id,
                     color:data.color,
@@ -35,7 +35,7 @@ const DetailCart = ()=>{
     
     const handelRemoveProduct = (e,data)=>{
       
-            dispatch(cartSlice.actions.removeProduct({
+            dispatch(guestCartSlice.actions.removeProduct({
                 id:data.id,
                 color:data.color,
                 size:data.size,

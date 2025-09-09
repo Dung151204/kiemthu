@@ -2,16 +2,17 @@ import { generatePath, Link } from "react-router-dom";
 import { chitiet1 } from "../../assets/index";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch,useSelector } from "react-redux";
-import { SelectProductCart } from "../../redux/selector";
-import cartSlice from "../../redux/cartSlice";
+import { SelectGuestCart, SelectUser, SelectUserCart } from "../../redux/selector";
+import guestCartSlice from "../../redux/guestCartSlice";
 import { useToast } from "../../components/toastMessage/ToastMessage";
 
 const CartProduct = ({setShowCart}) => {
   const {showToast} = useToast()
-  const listProductCart = useSelector(SelectProductCart)
+  const dataUser = useSelector(SelectUser)
+  const listProductCart =dataUser.role === "user" || dataUser.role === "admin" ? useSelector(SelectUserCart) : useSelector(SelectGuestCart)
   const dispatch = useDispatch()
   const handelRemoveProduct = (e,data)=>{
-      dispatch(cartSlice.actions.removeProduct(
+      dispatch(guestCartSlice.actions.removeProduct(
             {
                 id:data.id, 
                 color:data.color, 

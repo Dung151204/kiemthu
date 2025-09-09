@@ -14,6 +14,8 @@ export const registerApiUser = async(newUser)=>{
         if (!res.ok) throw new Error("Failed to register user");
         const data = await res.json();
         return data;   
+
+       
       
 }
 
@@ -93,7 +95,7 @@ export const getAccessTokenApiUser = async ()=> {
     return data;   // trả về token
 };
 
-//Lấy thông tin user đăng đăng nhập
+//Lấy thông tin user đang đăng nhập  (Bao gồm cả giỏ hàng)
 export const getApiUserCurrent  = async(token)=>{
     const res = await fetch("/api/user/current",{
         method:"GET",
@@ -127,6 +129,27 @@ export const updateApiUser = async (value,token)=>{
         })
         
     })
-    // const data = await res.json()
-    return res
+    const data = await res.json()
+    return data
+}
+
+//Thêm sản phẩm vào giỏ hàng của user trên server
+export const addToCartUserApi = async(value,token)=>{
+    const res = await fetch("/api/user/addToCart",{
+         method:"PUT",
+        headers: {
+             "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
+        },
+        // credentials: "include",
+        body: JSON.stringify({
+                "pid":value.id,
+                "quantity": value.quantity,
+                "color": value.color,
+                "size": value.size,
+                "price": value.price,
+        })
+    })
+    const data = await res.json()
+    return data
 }

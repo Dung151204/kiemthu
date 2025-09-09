@@ -45,7 +45,7 @@ const HomePage = ()=>{
                         setLoading(false)
                     })
                     .catch((err) => {
-                        console.error("Fetch error:", err);
+                        console.error("Fetch error 1:", err);
                         setLoading(false);
                     }
                 );
