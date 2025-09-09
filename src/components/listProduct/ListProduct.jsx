@@ -29,7 +29,9 @@ const ListProduct = (prop)=>{
                 </select>
             </div>
             {
-                prop.loading? <div className=" mt-10 w-full"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div> :
+                prop.loading? 
+                <div className=" mt-10 w-full"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div>
+                 :
                 <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
                     {
                        prop.data?.map((product)=>(

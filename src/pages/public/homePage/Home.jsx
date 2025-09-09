@@ -1,14 +1,16 @@
 import 'swiper/css';
 import { Link } from "react-router-dom"
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useState } from "react"
 import { SwiperSlide } from 'swiper/react';
 import { LiaShippingFastSolid } from "react-icons/lia";
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { BsBoxSeam } from "react-icons/bs";
 import { MdOutlineSupportAgent } from "react-icons/md";
 import { HiOutlineCreditCard } from "react-icons/hi2";
+
 import {slider1,slider2,slider3,slider4,slider5,fullset1,fullset2,fullset3} from "../../../assets/index.jsx"
 import { Slider , Product } from "../../../components/index.jsx"
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { getApiProduct } from '../../../service/productApiService.jsx';
 
 
 
@@ -32,13 +34,12 @@ const listOufit = [
 ]
 
 const HomePage = ()=>{
-    const [dataProduct,setDataProduct] = useState({})
+    const [dataProduct,setDataProduct] = useState([])
    const [loading,setLoading] = useState(true)
 
 
     useEffect(()=>{
-         fetch("/api/product")
-                    .then((res)=>res.json())
+            getApiProduct()
                     .then((dt)=>{
                         setDataProduct(dt.data)
                         setLoading(false)

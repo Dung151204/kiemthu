@@ -1,7 +1,7 @@
 
 import { memo, useEffect, useState } from "react";
 import FilterCategory from "./filterCategory/FilterCategory.jsx"
-
+import { getApiCategoryProduct } from "../../service/productApiService.jsx";
 
 const sizes = ["XXL","XL","L","M","S","XS"]
 const FilterNavbar = (prop)=>{
@@ -13,14 +13,13 @@ const FilterNavbar = (prop)=>{
 
 
     useEffect(()=>{  //gọi API để lấy dữ tên các loại sp
-        fetch("/api/productCategory")
-            .then((res)=>res.json())
+        getApiCategoryProduct()
             .then((dt)=>{
                 const categorys = dt.data.map(x=>x.categoryName)
                 const filterCategory = categorys.filter(x=>x.includes(prop.name))
                 setListCategory(filterCategory)
             })
-    },[])
+    },[prop.name])
 
     useEffect(()=>{   // run khi bất cứ filter nào thay đổi
         prop.handelFilterChange({
@@ -53,7 +52,7 @@ const FilterNavbar = (prop)=>{
                     <ul className="ml-5">
                        {listCategory.map((category,index)=>(
                             <li key={index} className="flex w-full ml-  mt-1 mb-1">
-                                <input type="checkbox" value={category} onChange={(e)=>handelCatetory(e)}/>
+                                <input type="checkbox" value={category || ""} onChange={(e)=>handelCatetory(e)}/>
                                 <p className="ml-2">{category}</p>
                             </li>
                         ))}
@@ -62,7 +61,7 @@ const FilterNavbar = (prop)=>{
                 <FilterCategory  //lọc theo giá
                    name = "Giá"
                 >
-                   <input type="range" min="0" max="300000" step="10000" value={filterPrice} onChange={(e)=>setFilterPrice(e.target.value)} className="ml-2 w-[90%]"/>
+                   <input type="range" min="0" max="300000" step="10000" value={filterPrice || ""} onChange={(e)=>setFilterPrice(e.target.value)} className="ml-2 w-[90%]"/>
                    <div className="flex justify-between w-[90%] ml-2">
                     <p className="font-medium">0đ</p>
                     <p className="font-medium">{filterPrice}đ</p>
@@ -84,7 +83,7 @@ const FilterNavbar = (prop)=>{
                        {
                        sizes.map((size,index)=>(
                          <li key={index} className="flex w-full mb-1">
-                            <input value={size} onChange={e=>handelSize(e)} type="checkbox" />
+                            <input value={size | ""} onChange={e=>handelSize(e)} type="checkbox" />
                             <p className="ml-2">{size}</p>
                         </li>
                        ))

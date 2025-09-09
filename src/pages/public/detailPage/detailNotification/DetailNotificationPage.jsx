@@ -2,16 +2,16 @@ import { useEffect, useState } from "react"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
 import { useParams } from "react-router-dom"
 
+import { getApiDetailBlog } from "../../../../service/blogApiService"
+
 const DetailNotificationPage = ()=>{
     const [isLoading,setIsLoading] = useState(true)
     const {id} = useParams()
     const [dataDetail,setDataDetail] = useState([])
     useEffect(()=>{
-        fetch(`/api/blog/${id}`)
-        .then(res=>res.json())
+        getApiDetailBlog(id)
         .then(dt=>{
             setDataDetail(dt.data)
-            console.log(dt.data)
             setIsLoading(false)
         })
     },[])

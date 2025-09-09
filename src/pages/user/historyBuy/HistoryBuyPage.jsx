@@ -1,3 +1,8 @@
+import { useEffect } from "react";
+import { getAccessTokenApiUser } from "../../../service/userApiService";
+import { getOrderByUserApi } from "../../../service/orderApiService";
+import { useSelector } from "react-redux";
+import { SelectUser } from "../../../redux/selector";
 
 const orders = [
   {
@@ -19,6 +24,17 @@ const orders = [
 
 
 const HistoryPage = ()=>{
+  const dataUser = useSelector(SelectUser)
+  
+    useEffect(()=>{
+      console.log("chay effec")
+      const fetchApi = async()=>{
+        const data  =await getOrderByUserApi(dataUser.accessToken)
+        console.log("history : ",data)
+      }
+      console.log("dung effec")
+      fetchApi()
+    },[])
     return (
         <div>
             <div className="w-[80%] m-auto min-h-[500px] bg-blue-50">

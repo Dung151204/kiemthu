@@ -7,15 +7,20 @@ import { FaTwitter } from "react-icons/fa6";
 import { FaPinterest } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
+
 import { Breadcrumb } from "../../../../components/index.jsx";
 import  Slider  from "../../../../components/slider/Slider.jsx"
 import {Button} from "../../../../components/index.jsx"
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-
-
+import { getApiDetailProduct } from "../../../../service/productApiService";
+import { useDispatch } from "react-redux";
+import cartSlice from "../../../../redux/cartSlice";
+import { useToast } from "../../../../components/toastMessage/ToastMessage";
 
 const DetailProductPage = ()=>{
+    const navigate = useNavigate()
+    const {showToast} = useToast()
     const [dataProduct,setDataProduct] = useState({})
     const [quantity,setQuantity] = useState(0)
     const [count,setCount] = useState(1)
@@ -26,14 +31,14 @@ const DetailProductPage = ()=>{
     const [currentImg,setCurrentImg] = useState()
     const [listImg,setListImg] = useState([])
     const [isLoading,setIsLoading] = useState(true)
+    const dispatch = useDispatch()
     
-
     const { slug } = useParams(); // Lấy id từ URL
      useEffect(()=>{ // gọi api lấy dữ liệu
-         fetch(`/api/product/${slug}`)
-            .then((res)=>res.json())
+        getApiDetailProduct(slug)
             .then((dt)=>{
-                setDataProduct(dt.data)
+                     setDataProduct(dt.data)
+                     console.log("Data chi tiet sp : ",dt.data)
                      setListSize(dt.data.allSizes)
                      setQuantity(dt.data.stock)
                     const colors = dt?.data?.options?.map(x=>x.color)
@@ -47,7 +52,7 @@ const DetailProductPage = ()=>{
                  console.error("Fetch error:", err);
                 }
             );
-        },[])
+    },[slug])
 
     useEffect(()=>{ //hiển thị size theo màu sắc chọn
         if(colorSelect !== ""){
@@ -69,6 +74,30 @@ const DetailProductPage = ()=>{
     //     setColor(colorOption)
     //     // setIdSelectColor(idOption)
     // }
+     
+    const handelAddProductCart = (data)=>{
+        if(sizeSelect ==="" || colorSelect===""){
+            showToast("Chọn đủ thông tin cho sản phẩm","error")
+        }
+        else{
+            showToast("Thêm sản phẩm thành công vào giỏ")
+            dispatch(cartSlice.actions.addProduct(
+                {
+                    id : dataProduct._id,
+                    slug : slug,
+                    name : dataProduct.title,
+                    img : currentImg,
+                    size : sizeSelect,
+                    color : colorSelect,
+                    price : dataProduct.price,
+                    quantity : count
+                }
+            ))
+            if(data=="paynow"){
+                navigate("/orderProduct")
+            }
+        }
+    }
 
     return (
         <div>   
@@ -185,7 +214,7 @@ const DetailProductPage = ()=>{
                                 <p className="font-medium w-[120px] m-auto">Số lượng :</p>
                                 <div className="w-full flex items-center">
                                     <div className="w-[150px] h-[30px] flex items-center  border border-solid border-[#ddd]">
-                                        <button onClick={()=>setCount(count != 0 ? prev=>prev-1 : 0)} className=" pl-4 pr-4 h-full border border-solid border-r-[#ccc] font-bold ">-</button>
+                                        <button onClick={()=>setCount(count != 1 ? prev=>prev-1 : 1)} className=" pl-4 pr-4 h-full border border-solid border-r-[#ccc] font-bold ">-</button>
                                         <span className="pl-5 pr-5 text-center font-bold w-full">{count}</span>
                                         <button onClick={()=>setCount(prev=>prev+1)} className=" pl-4 pr-4 h-full border border-solid border-l-[#ccc] font-bold ">+</button>
                                     
@@ -196,15 +225,14 @@ const DetailProductPage = ()=>{
                         
                             {/* Thêm vào giỏ hàng */}
                             <div className="flex flex-wrap gap-2 w-full  justify-between mb-1 lg:mt-10">
-                                <Button 
-                                    name ="Thêm vào giò hàng"
-                                    style = "p-2 pl-4 pr-4 min-w-[240px] text-[#ff0000] border-[#ff0000] mt-3 flex-1"
-                                />
-                                <Button 
+                               
+                                <button onClick={handelAddProductCart} className=" border rounded  w-full md:w-auto hover:opacity-80  p-2 pl-4 pr-4 min-w-[240px] text-[#ff0000] border-[#ff0000] mt-3 flex-1">Thêm vào giò hàng</button>
+                                <button onClick={()=>{ handelAddProductCart("paynow")}} className=" border rounded  w-full md:w-auto hover:opacity-80  p-2 pl-4 pr-4 bg-red-600 text-white min-w-[240px] mt-3 flex-1">Mua ngay</button>
+                                {/* <Button 
                                     navigate = "/orderProduct"
                                     name ="Mua ngay"
                                     style = "p-2 pl-4 pr-4 bg-red-600 text-white min-w-[240px] mt-3 flex-1"
-                                />
+                                /> */}
                             </div>
                             <div className="">
                                 <Button 

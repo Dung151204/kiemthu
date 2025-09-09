@@ -1,35 +1,41 @@
+
 import { useEffect, useState } from "react"
-import { FilterNavbar,ListProduct } from "../../../components/index.jsx"
-import { Breadcrumb } from "../../../components/index.jsx";
-const productPage = ()=>{
+import { Breadcrumb, FilterNavbar,ListProduct } from "../../../components/index.jsx"
+import { getApiProduct } from "../../../service/productApiService.jsx"
+const CategoryProductPage = ({category})=>{
     const [data,setData] = useState([])
-    const [loading,setLoading] = useState(true)
-    const [dataFilter,setDataFilter] = useState({
+     const [loading,setLoading] = useState(true)
+     const [dataFilter,setDataFilter] = useState({
             category:[],
             size : [],
             price:300000,
             arrange:"1"
     })
+
     useEffect(()=>{
-                fetch("/api/product")
-                    .then((res)=>res.json())
+              if(!loading) setLoading(true)
+             getApiProduct()
                     .then((dt)=>{
-                        let dataByFilter = dt.data.filter(product=>product.price <= dataFilter.price)  //lọc theo giá sp
-                        if(dataFilter.category.length !==0 ){  //Lọc theo loại sp
+                        // Lọc theo Filter 
+                        let dataByShirt = dt.data.filter(x=>x.category.categoryName.includes(category)) //Lọc sản phẩm Loại Áo
+                        let dataByFilter = dataByShirt.filter(product=>product.price <= dataFilter.price) //Lọc theo giá 
+                        if(dataFilter.category.length !==0 ){  //Lọc theo loại
                              dataByFilter = dataByFilter.filter(product=>dataFilter.category.includes(product.category.categoryName))
                         }
-                        if(dataFilter.size.length !==0){ //lọc theo size sp
-                           dataByFilter = dt.data.filter(product => {
+                        if(dataFilter.size.length !==0){  //Lọc theo size
+                             dataByFilter = dataByShirt.filter(product => {
                                 // lấy tất cả size của sản phẩm
                                 const listSize = product.options.flatMap(opt =>
                                      opt.sizeQuantity.map(sq => sq.size)
                                 );
                                 const sizes = [...new Set(listSize)]; // loại bỏ trùng
+                                console.log(sizes)
                                 // kiểm tra xem product có đủ toàn bộ size yêu cầu không
                                 return dataFilter.size.some(size => sizes.includes(size));
                             });
+                        
                         }
-                        if(dataFilter.arrange !=="1"){ //Lọc theo sắp xếp tăng/giảm
+                        if(dataFilter.arrange !=="1"){ //Lọc theo tăng/giảm giá
                             if(dataFilter.arrange ==="2"){
                                 dataByFilter = [...dataByFilter].sort((a,b)=>b.price - a.price)
                             }
@@ -37,6 +43,7 @@ const productPage = ()=>{
                                 dataByFilter = [...dataByFilter].sort((a,b)=>a.price - b.price)
                             }
                         }
+                        
                         setData(dataByFilter)
                         setLoading(false)
                     })
@@ -45,31 +52,26 @@ const productPage = ()=>{
                         setLoading(false);
                     }
                 );
-    },[dataFilter])
-    
-    const handelFilterChange = (value)=>{   //xử lý khi có filter thay đổi
+          
+    },[dataFilter,category])
+
+      const handelFilterChange = (value)=>{
         setDataFilter(value)
     }
     return (
         <div>
-            <Breadcrumb nameCurrent = "Sản phẩm"/>
+            <Breadcrumb nameCurrent = {category ? category : "Sản phẩm"}/>
             <div className="h-full flex">
                 <FilterNavbar
                     handelFilterChange={handelFilterChange}
-                    name="" 
+                    name={category}
                 />
-                {/* <div className="flex justify-end p-3">
-                        <button onClick={()=>setShowFilter(true)} className="flex items-center pl-2 pr-2 rounded-md border border-solid border-[#ccc]">
-                            <p>Lọc sản phẩm</p>
-                            <LuFilter className="block md:hidden ml-1"/>
-                        </button>
-                 </div> */}
-                <div className="flex-1 pb-10 pl-3 pr-3">
+                <div className="flex-1 pb-10">
                     <ListProduct
                         handelFilterChange={handelFilterChange}
                         dataFilter={dataFilter}
                         loading = {loading}
-                        name = "Sản phẩm"
+                        name = {category ? category : "Sản phẩm"}
                         data= {data}
                     />
                 </div>
@@ -78,4 +80,4 @@ const productPage = ()=>{
     )
 }
 
-export default productPage
+export default CategoryProductPage
