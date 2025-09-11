@@ -5,14 +5,15 @@ const ToastContext = createContext();   // tạo useContext
 export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts]  = useState([]);
 
   const showToast = (message, type = "success") => {
     const id = Date.now();
-    setToasts([...toasts, { id, message, type }]);
+    // setToasts([...toasts, { id, message, type }]);
+    setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3000); // 3s tự ẩn
+    }, 2000); // 3s tự ẩn
   };
 
   return (

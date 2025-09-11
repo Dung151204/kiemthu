@@ -27,21 +27,21 @@ const HistoryPage = ()=>{
   const dataUser = useSelector(SelectUser)
   
     useEffect(()=>{
-      console.log("chay effec")
-      const fetchApi = async()=>{
-        const data  =await getOrderByUserApi(dataUser.accessToken)
-        console.log("history : ",data)
-      }
-      console.log("dung effec")
-      fetchApi()
+      // console.log("chay effec")
+      // const fetchApi = async()=>{
+      //   const data  =await getOrderByUserApi(dataUser.accessToken)
+      //   console.log("history : ",data)
+      // }
+      // console.log("dung effec")
+      // fetchApi()
 
       // const addCartUser = async()=>{
       //   const data = await addToCartUserApi({
-      //        "id": "66ebeeb27c9dabee5de0eaf4",
+      //        "id": "66ec35b4359d458f726052bc",
       //         "quantity": 1,
-      //         "color": "trắng",
-      //         "size": "M",
-      //         "price": 179000
+      //         "color": "Đen",
+      //         "size": "S",
+      //         "price": 159000
       //   },dataUser.accessToken)
       //   console.log("dataCartUser : ",data)
       // }

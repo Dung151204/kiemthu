@@ -95,20 +95,7 @@ export const getAccessTokenApiUser = async ()=> {
     return data;   // trả về token
 };
 
-//Lấy thông tin user đang đăng nhập  (Bao gồm cả giỏ hàng)
-export const getApiUserCurrent  = async(token)=>{
-    const res = await fetch("/api/user/current",{
-        method:"GET",
-        headers:{
-            "Content-Type": "application/json",
-             "Authorization": `Bearer ${token}`,
-        },
-        // credentials: "include"   // lấy token trên cookie
-    });
-    if (!res.ok) throw new Error("Failed fetch user current");
-    const data = await res.json();
-    return data;   // trả về data
-}
+
 
 //Cập nhật thông tin User
 export const updateApiUser = async (value,token)=>{
@@ -132,6 +119,20 @@ export const updateApiUser = async (value,token)=>{
     const data = await res.json()
     return data
 }
+//Lấy thông tin user đang đăng nhập  (Bao gồm cả giỏ hàng)
+export const getApiUserCurrent  = async(token)=>{
+    const res = await fetch("/api/user/current",{
+        method:"GET",
+        headers:{
+            "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`,
+        },
+        // credentials: "include"   // lấy token trên cookie
+    });
+    if (!res.ok) throw new Error("Failed fetch user current");
+    const data = await res.json();
+    return data;   // trả về data
+}
 
 //Thêm sản phẩm vào giỏ hàng của user trên server
 export const addToCartUserApi = async(value,token)=>{
@@ -151,5 +152,24 @@ export const addToCartUserApi = async(value,token)=>{
         })
     })
     const data = await res.json()
+    return data
+}
+
+
+export const removeToCartUserApi = async(value,token)=>{
+    const res = await fetch("/api/user/removeFromCart",{
+        method:"PUT",
+        headers: {
+             "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
+        },
+        // credentials: "include",
+        body: JSON.stringify({
+                "pid":value.id,
+                "color": value.color,
+                "size": value.size,
+        })
+    })
+    const data = res.json()
     return data
 }

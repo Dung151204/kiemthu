@@ -6,43 +6,102 @@ import { useState } from "react";
 import { Button } from "../../../components/index";
 import { useSelector,useDispatch } from "react-redux";
 import guestCartSlice from "../../../redux/guestCartSlice";
-import {SelectGuestCart} from "../../../redux/selector";
+import {SelectGuestCart, SelectUser, SelectUserCart} from "../../../redux/selector";
 import { useToast } from "../../../components/toastMessage/ToastMessage";
+import { addCartUser, removeCartUser } from "../../../redux/userCartSlice";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 const OrderPage = ()=>{
     const {showToast} = useToast()
     const dispatch = useDispatch()
-    const listProductCart = useSelector(SelectGuestCart)
-     const handelQuatity = (e,data)=>{
-          if(data.quantity !== 1){
-            dispatch(guestCartSlice.actions.updateProduct(
-                {
+    const dataUser = useSelector(SelectUser)
+    const cartUser = useSelector(SelectUserCart)
+    const listProductCart =dataUser.role==="user" || dataUser.role==="admin" ?useSelector(SelectUserCart) : useSelector(SelectGuestCart)
+     const handelQuatity = async(e,data)=>{
+        e.stopPropagation()
+        e.preventDefault()
+        
+        try {
+            if(dataUser.role === "admin" || dataUser.role==="user"){
+                let quantityChange
+                data.key === "reduce" ? quantityChange = -1 : quantityChange = 1
+                if((data.key === "reduce" && data.quantity) !==1 || (data.key !== "reduce")){
+
+                    await dispatch(addCartUser({
+                          value: {
+                                   "id":data.id,
+                                    "quantity": quantityChange,
+                                    "color": data.color,
+                                    "size": data.size,
+                                    "price": data.price,
+                                },
+                          token : dataUser.accessToken
+                    })).unwrap()
+                    showToast("Cập nhật sản phẩm thành công")
+                }else{
+                    showToast("Số lượng sản phẩm đã là nhỏ nhất","error")
+                }
+            }
+            else{
+                 if((data.key === "reduce" && data.quantity) !==1 || (data.key !== "reduce")){
+                    dispatch(guestCartSlice.actions.updateProduct(
+                        {
+                            id:data.id,
+                            color:data.color,
+                            size:data.size,
+                            key:data.key
+                        }
+                    ))
+                    showToast("Cập nhật sản phẩm thành công")
+                }
+                else{
+                    showToast("Số lượng sản phẩm đã là nhỏ nhất","error")
+                }
+            }
+            
+        } catch (error) {
+            showToast("Cập nhật sản phẩm thất bại","error")
+            
+        }
+    }
+    
+    const handelRemoveProduct = async(e,data)=>{
+         e.stopPropagation()
+         e.preventDefault()
+        try {
+            if(dataUser.role){    // Xóa sản phẩm khi là user || admin
+                await dispatch(removeCartUser({
+                    "value" : {
+                            id:data.id, 
+                            color:data.color, 
+                            size:data.size
+                    },
+                    "token" : dataUser.accessToken
+                })).unwrap()
+          
+            }
+            else{   //Xóa sản phẩm khi là khách
+                dispatch(guestCartSlice.actions.removeProduct({
                     id:data.id,
                     color:data.color,
                     size:data.size,
-                    key:data.key
-                }
-            ))
-            showToast("Cập nhật sản phẩm thành công")
+                }))
+            }
+            showToast("Xóa sản phẩm thành công")
+        } catch (error) {
+            showToast("Xóa sản phẩm thất bại","error")
         }
-
-        e.stopPropagation()
-        e.preventDefault()
-    }
-    
-    const handelRemoveProduct = (e,data)=>{
-      
-            dispatch(guestCartSlice.actions.removeProduct({
-                id:data.id,
-                color:data.color,
-                size:data.size,
-             }))
-        showToast("Xóa sản phẩm thành công")
-         e.stopPropagation()
-         e.preventDefault()
+        
     }
     return (
+        <div>
+            {
+                cartUser.status==="loading" &&
+                <div className="fixed top-0 bottom-0 left-0 right-0 bg-[#cccccc33] z-0 ">
+                    <AiOutlineLoading3Quarters className="animate-spin text-center m-auto mt-60 text-[38px]  text-blue-500"/>
+                </div>
+            }
         <div className="min-h-[400px] p-4 w-[84%] m-auto">
             <div className="flex flex-wrap-reverse">
                 <div className="flex-1 min-h-[300px] bg-white p-2">
@@ -92,9 +151,9 @@ const OrderPage = ()=>{
                                                     <div className="flex">
                                                         {/* <div className="w-[40px] "> */}
                                                             <div className="w-auto h-[30px] flex items-center justify-between  border border-solid border-[#ddd]">
-                                                               <button onClick={(e)=>handelQuatity(e,{id:product.id, color:product.color, size:product.size, key:"reduce",quantity:product.quantity})} className={` pl-2 pr-2 h-full border border-solid border-r-[#ccc] font-bold `}>-</button>
-                                                                <span className="w-[20px] text-center font-bold">{product.quantity}</span>
-                                                                <button onClick={(e)=>handelQuatity(e,{id:product.id, color:product.color, size:product.size, key:"increase"})} className=" pl-[7px] pr-[7px] h-full border border-solid border-l-[#ccc] font-bold ">+</button>
+                                                               <button onClick={(e)=>handelQuatity(e,{id:product.id, color:product.color, size:product.size, price:product.price,key:"reduce",quantity:product.quantity})} className={` pl-2 pr-2 h-full border border-solid border-r-[#ccc] font-bold `}>-</button>
+                                                                     <span className="w-[20px] text-center font-bold">{product.quantity}</span>
+                                                                <button onClick={(e)=>handelQuatity(e,{id:product.id, color:product.color, size:product.size, price:product.price,key:"increase",quantity:product.quantity})} className=" pl-[7px] pr-[7px] h-full border border-solid border-l-[#ccc] font-bold ">+</button>
                                                             </div>
                                                         {/* </div> */}
                                                     </div>
@@ -140,6 +199,7 @@ const OrderPage = ()=>{
                         
                 </div>
             </div>
+        </div>
         </div>
     )
 }
