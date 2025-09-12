@@ -14,7 +14,6 @@ import { IoShirtOutline } from "react-icons/io5";
 import { PiPants } from "react-icons/pi";
 import { FiBell } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
-import { chitiet1,avatar } from '../../../assets/index';
 import { MdDeleteOutline } from "react-icons/md";
 import CartProduct from '../../../components/cartProduct/CartProduct';
 import { useSelector,useDispatch } from 'react-redux';
@@ -75,16 +74,15 @@ const Header = ({setShowLogin,setShowRegister})=>{
         
     },[location.pathname,widthWindow])
 
-    const handelLogOut = ()=>{
-        logoutApiUser()
-        .then(()=>{
+    const handelLogOut = async()=>{
+        try {
+            const logout = await logoutApiUser()
             dispatch(authSlice.actions.logout())
             showToast("Đăng xuất thành công")
             navigate("/")
-        })
-        .catch((err)=>{
+        } catch (error) {
             showToast("Đăng xuất thất bại")
-        })
+        }
     }
     
     return(

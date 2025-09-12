@@ -28,13 +28,16 @@ const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
                 dispatch(
                     authSlice.actions.loginSuccess({
                         accessToken: dataServer.data.accessToken,
-                        dataUser: dataServer.data.user,
+                        dataUser:{ ...dataServer.data.user,"password" : password},
                         role: dataServer.data.user.role,
                     })
                 );
 
                 dispatch(fetchCart(dataServer.data.accessToken))
 
+                // console.log("dataServer",dataServer)
+                // const dataAccessToken = await getAccessTokenApiUser(dataServer.data.refreshToken)
+                // console.log("dataAccessToken",dataAccessToken)
                 setShowLogin(false);
             } catch (err) {
                 console.error(err);

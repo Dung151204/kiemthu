@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getApiUserCurrent ,updateApiUser} from "../../../service/userApiService"
+import { getApiUserCurrent ,updateApiUser,getAccessTokenApiUser, getAllUserApi} from "../../../service/userApiService"
 import { useSelector,useDispatch } from "react-redux"
 import { SelectUser } from "../../../redux/selector"
 import { useToast } from "../../../components/toastMessage/ToastMessage"
@@ -15,18 +15,20 @@ const ProfilePage = ()=>{
     const [name,setName] = useState("")
     const [email,setEmail] = useState("")
     const [phone,setPhone] = useState("")
- 
+    const [password,setPassWord] = useState("")
+    
+   
     useEffect(() => {
         if(dataUser.role){
             setName(dataUser?.userInfor?.userName)
             setEmail(dataUser?.userInfor?.email)
             setPhone(dataUser?.userInfor?.phoneNumber)
         }
-       
+      
         const fetchUser = async () => {
             try {
                 const data = await getApiUserCurrent(dataUser.accessToken); // chờ Promise resolve
-                console.log("dataUserCurrentSever", data)
+                console.log("getApiUserCurrent",data)
             } catch (err) {
                 console.error(err,"lỗi lấy DL user");
             }
@@ -35,22 +37,30 @@ const ProfilePage = ()=>{
     },[]);
     const handelChangeInfo = async()=>{
        try{
-            setIsLoading(true)
-            const dataUpdate = await updateApiUser({
-                userName : name,
-                email : email,
-                phoneNumber : phone,
-                address : dataUser.userInfor.address,
-                avatar : dataUser.userInfor.avatar,
-                password: "123"
-            },dataUser.accessToken)
-
-            const userInforServer = await getApiUserCurrent(dataUser.accessToken); // lấy dữ liệu đc cập nhật từ server
-         
-            dispatch(authSlice.actions.updateUserInfo(userInforServer.data))
-            // console.log("dataUser in store :",dataUser)
-            showToast("Cập nhật thành công")
-            setIsLoading(false)
+        if(password !== ""){
+            if(password === dataUser.userInfor.password){
+                setIsLoading(true)
+                const dataUpdate = await updateApiUser({
+                    userName : name,
+                    email : email,
+                    phoneNumber : phone,
+                    address : dataUser.userInfor.address,
+                    avatar : dataUser.userInfor.avatar,
+                    password: "123"
+                },dataUser.accessToken)
+                const userInforServer = await getApiUserCurrent(dataUser.accessToken); // lấy dữ liệu đc cập nhật từ server
+                dispatch(authSlice.actions.updateUserInfo({...userInforServer.data,password : dataUser.userInfor.password}))
+                showToast("Cập nhật thành công")
+                setPassWord("")
+                setIsLoading(false)
+            }
+            else{
+                showToast("Mật khẩu không chính xác","error")
+            }
+        }
+        else{
+            showToast("Bạn chưa nhập đủ thông tin","error")
+        }
        }
        catch(err){
         console.error("Lỗi update:",err)
@@ -81,6 +91,10 @@ const ProfilePage = ()=>{
                     <div className="flex items-center flex-wrap mb-2">
                         <p className="w-[150px] font-medium">Vai trò :</p>
                         <input className="flex-1 p-1 pl-4 border rounded-md outline-blue-400" type="text"  value={dataUser.userInfor.role || ""} readOnly/>
+                    </div>
+                     <div className="flex items-center flex-wrap mb-2">
+                        <p className="w-[150px] font-medium flex flex-col">Nhập PassWord: <span className="text-[12px] text-red-500">(Bắt buộc)</span></p>
+                        <input className="flex-1 p-1 pl-4 border rounded-md outline-blue-400" type="text"  value={password} onChange={e=>setPassWord(e.target.value)} />
                     </div>
                 <div className="flex justify-center">
                         <button onClick={handelChangeInfo} className="bg-blue-500 min-w-[180px] mt-2 rounded-lg text-white p-1 pl-4 pr-4 cursor-pointer hover:opacity-90">

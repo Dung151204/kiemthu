@@ -1,22 +1,28 @@
 import { generatePath, Link } from "react-router-dom"
 import { IoMdReturnLeft } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
-import { chitiet1 } from "../../../assets/index";
 import { useState } from "react";
 import { Button } from "../../../components/index";
 import { useSelector,useDispatch } from "react-redux";
 import guestCartSlice from "../../../redux/guestCartSlice";
 import {SelectGuestCart, SelectUser, SelectUserCart} from "../../../redux/selector";
 import { useToast } from "../../../components/toastMessage/ToastMessage";
-import { addCartUser, removeCartUser } from "../../../redux/userCartSlice";
+import { addCartUser, orderCartUser, removeCartUser } from "../../../redux/userCartSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { getApiUserCurrent } from "../../../service/userApiService";
+import { orderCartApi } from "../../../service/orderApiService";
 
 
 const OrderPage = ()=>{
-    const {showToast} = useToast()
-    const dispatch = useDispatch()
     const dataUser = useSelector(SelectUser)
     const cartUser = useSelector(SelectUserCart)
+    const {showToast} = useToast()
+    const [name,setName] = useState(dataUser.role ?dataUser.userInfor.userName : "")
+    const [email,setEmail] = useState(dataUser.role ?dataUser.userInfor.email : "")
+    const [address,setAddress] = useState(dataUser.role ?dataUser.userInfor.address : "")
+    const [phone,setPhone] = useState(dataUser.role ?dataUser.userInfor.phoneNumber : "")
+    const [textNote,setTextNote] = useState("")
+    const dispatch = useDispatch()
     const listProductCart =dataUser.role==="user" || dataUser.role==="admin" ?useSelector(SelectUserCart) : useSelector(SelectGuestCart)
      const handelQuatity = async(e,data)=>{
         e.stopPropagation()
@@ -65,7 +71,6 @@ const OrderPage = ()=>{
             
         }
     }
-    
     const handelRemoveProduct = async(e,data)=>{
          e.stopPropagation()
          e.preventDefault()
@@ -94,6 +99,19 @@ const OrderPage = ()=>{
         }
         
     }
+    
+    const handelOrder  = async()=>{
+      try {
+        const dataUserCurrent = await getApiUserCurrent(dataUser.accessToken)
+        await dispatch(orderCartUser({
+            "value":{...dataUserCurrent.data, note:textNote || ""},
+            "token":dataUser.accessToken
+        })).unwrap()
+         showToast("Đặt hàng thành công")
+      } catch (error) {
+         showToast("Đặt hàng thất bại","error")
+      }
+    }
     return (
         <div>
             {
@@ -107,11 +125,11 @@ const OrderPage = ()=>{
                 <div className="flex-1 min-h-[300px] bg-white p-2">
                     <h2 className="text-[24px] font-bold   mb-2 ml-2 text-center text-blue-600">Thông tin đặt hàng</h2>
                     <form action="" className=" flex flex-wrap gap-2">
-                       <input className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_5rem]" type="text" placeholder="Họ tên" />
-                       <input className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_5rem]" type="text" placeholder="Email" />
-                       <input className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%]" type="text" placeholder="Số điện thoại" />
-                       <input className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%]" type="text" placeholder="Địa chỉ" />
-                       <textarea className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%] h-[100px]" type="text" placeholder="Ghi chú" />
+                       <input value={name || ""} onChange={e=>setName(e.target.value)} className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_5rem]" type="text" placeholder="Họ tên" />
+                       <input value={email || ""} onChange={e=>setEmail(e.target.value)} className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_5rem]" type="text" placeholder="Email" />
+                       <input value={phone || ""} onChange={e=>setPhone(e.target.value)} className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%]" type="text" placeholder="Số điện thoại" />
+                       <input value={address || ""} onChange={e=>setAddress(e.target.value)} className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%]" type="text" placeholder="Địa chỉ" />
+                       <textarea value={textNote} onChange={e=>setTextNote(e.target.value)} className="outline-none rounded-t-md border p-1 pl-3 flex-[1_0_100%] h-[100px]" type="text" placeholder="Ghi chú" />
                     </form>
                     <div>
                        <div className="flex items-center mt-2 flex-wrap">
@@ -185,10 +203,7 @@ const OrderPage = ()=>{
                                 <p className="w-[130px]">Tổng thanh toán :</p>
                                 <p className="font-medium text-blue-600 text-[18px]">{listProductCart.total + 20000}đ</p>
                             </div>
-                            <Button
-                                name="Hoàn tất đặt hàng"
-                                style = "p-1 pl-10 pr-10 border-[#ff0000] bg-[#ff0000] text-white mt-9"
-                            />
+                            <button onClick={handelOrder} className=" border rounded  w-full md:w-auto hover:opacity-80 p-1 pl-10 pr-10 border-[#ff0000] bg-[#ff0000] text-white mt-9">Hoàn tất đặt hàng</button>
                              <Link to={"/detailCart"}>
                                 <p className="text-blue-600 font-medium mt-8 flex items-center">
                                     <IoMdReturnLeft/>

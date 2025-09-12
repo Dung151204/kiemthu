@@ -4,7 +4,6 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdOutlineCurrencyExchange } from "react-icons/md";
 import { MdOutlineSupportAgent } from "react-icons/md";
 
-import { chitiet1 } from "../../../../assets/index"
 import { MdDeleteOutline } from "react-icons/md";
 import  {Button} from "../../../../components/index";
 import { useDispatch,useSelector } from "react-redux";

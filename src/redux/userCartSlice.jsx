@@ -1,8 +1,8 @@
-import { createSlice ,createAsyncThunk, asyncThunkCreator} from "@reduxjs/toolkit";
+import { createSlice ,createAsyncThunk} from "@reduxjs/toolkit";
 import { SelectUser } from "./selector";
 import { useSelector ,useDispatch } from "react-redux";
 import { getApiUserCurrent,addToCartUserApi,removeToCartUserApi } from "../service/userApiService";
-import { useToast } from "../components/toastMessage/ToastMessage";
+import { orderCartApi } from "../service/orderApiService";
 
 const userCartSlice = createSlice({
     name :"userCart",
@@ -86,19 +86,13 @@ const userCartSlice = createSlice({
                  state.status = "loading"
          })
           .addCase(addCartUser.fulfilled,(state,action)=>{
-             state.status = "idle"
-            // if(action.payload.status === "other"){
-                // state.status = "idle"
-                // state.products = action.payload.CartUser
-                // state.total = state.products.reduce((init,product)=>{
-                //         return init + product.price* product.quantity
-                // },0)
-            // }
-            // else{
-                // state.products.find(product=>product.id===action.payload.id).quantity += action.payload.quantity
-            // }
+                 state.status = "idle"
+                state.products = action.payload
+                state.total = state.products.reduce((init,product)=>{
+                        return init + product.price* product.quantity
+                },0)
          })
-          .addCase(removeCartUser.pending,(state,action)=>{
+         .addCase(removeCartUser.pending,(state,action)=>{
                state.status = "loading"
          })
          .addCase(removeCartUser.fulfilled,(state,action)=>{
@@ -112,7 +106,18 @@ const userCartSlice = createSlice({
                         return init + product.price* product.quantity
                 },0)
          })
-         
+         .addCase(orderCartUser.pending,(state,action)=>{
+               state.status = "loading"
+         })
+         .addCase(orderCartUser.fulfilled,(state,action)=>{
+            console.log("addcase order")
+               state.status = "idle"
+                state.products = [],
+                state.total = 0
+         })
+         .addCase(orderCartUser.rejected,(state,action)=>{
+               state.status = "idle"
+         })
     }
 
 })
@@ -145,44 +150,22 @@ export const addCartUser = createAsyncThunk("userCart/addCartUser",async({value,
    
     try{
         const dataCurrentUser = await addToCartUserApi(value,token)  // khi thêm thành công trả về toàn bộ infor user (bao gồm giỏ hàng)
-        console.log("dataCurrentUser",dataCurrentUser)
-        if(dataCurrentUser?.data?.acknowledged){ //trùng sp có trong giỏ
-           thunkAPI.dispatch( fetchCart(token))
-            // console.log("sp trung")
-            // console.log("value add : ",value)
-            // return {
-            //     "id": value.id,
-            //     "status":"duplicate",  // trùng 
-            //     "quantity" : value.quantity
-            // }
-        }
-        else{
-            // console.log("sp k trung")
-            // console.log("value add : ",value)
-            // console.log("dataCurrentUser",dataCurrentUser)
-           
-            // const cartUser = dataCurrentUser.data.cart.map(item=>({
-            //             id :item._id,   //ok
-            //             slug :item.product.slug, 
-            //             name : item.product.title,  
-            //             img : item.product?.options?.[0].images?.[0],
-            //             size : item.size,     //ok
-            //             color : item.color,   //ok
-            //             price : item.price,  //ok
-            //             quantity : item.quantity  //ok
-            // }))
-            thunkAPI.dispatch( fetchCart(token))
-            // console.log("cartUser",cartUser)
-            // return {
-            //     "cartUser":cartUser,
-            //     "status":"other"
-            // }
-        }
+        // console.log("dataCurrentUser",dataCurrentUser)
+            const cartUser = dataCurrentUser.data.cart.map(item=>({
+                        id :item.product._id,   //ok
+                        slug :item.product.slug, 
+                        name : item.product.title,  
+                        img : item.product?.options?.[0].images?.[0],
+                        size : item.size,     //ok
+                        color : item.color,   //ok
+                        price : item.price,  //ok
+                        quantity : item.quantity  //ok
+            }))
+            return cartUser
     }
     catch(err){
-
          console.error("Lỗi thêm vào giỏ hàng User : ", err)
-        return []
+         return []
     }
 
 })
@@ -190,17 +173,22 @@ export const addCartUser = createAsyncThunk("userCart/addCartUser",async({value,
 export const removeCartUser = createAsyncThunk("userCart/removeCartUser",async({value,token},thunkAPI)=>{
       try{
           const dataRespone = await removeToCartUserApi(value,token)
-        //   console.log("dataResponeRemove", dataRespone)
-        //   thunkAPI.dispatch(fetchCart(token))
           return value
       }
       catch(err){
-         console.error("Xóa sản phẩm thất bại")
+          console.error("Xóa sản phẩm thất bại")
+          throw err
       }
 })
 
-export const updateCartUser = createAsyncThunk("userCart/removeCartUser",async({value,token},thunkAPI)=>{
-
+export const orderCartUser = createAsyncThunk("userCart/orderCartUser",async({value,token},thunkAPI)=>{
+    try {
+        const dataOrder = await orderCartApi(value,token)
+        return dataOrder
+    } catch (error) {
+        console.error("Đặt hàng thất bại thất bại")
+         throw error
+    }
 })
 
 export default userCartSlice

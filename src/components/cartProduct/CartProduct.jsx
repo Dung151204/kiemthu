@@ -1,5 +1,4 @@
 import { Await, generatePath, Link } from "react-router-dom";
-import { chitiet1 } from "../../assets/index";
 import { MdDeleteOutline } from "react-icons/md";
 import { useDispatch,useSelector } from "react-redux";
 import { SelectGuestCart, SelectUser, SelectUserCart } from "../../redux/selector";

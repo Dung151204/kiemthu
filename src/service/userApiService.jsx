@@ -71,23 +71,25 @@ export const loginApiUser= async(value)=>{
 //     .catch(err=>err)
 // }
 
-export const logoutApiUser = ()=>{
-    return fetch("/api/user/logout",{
-        method:"POST"
-    })
-    .then(res=>{
+export const logoutApiUser = async()=>{
+  
+        const res = await fetch("/api/user/logout",{
+                        method:"POST"
+                    })
         if(!res.ok) throw new Error("Logout Failed")
-        return res.json()
-    })
+        return await res.json()
 }
 
 
 
 //Lấy accessToken mới thông quá refeshToken trong cookie
-export const getAccessTokenApiUser = async ()=> {
+export const getAccessTokenApiUser = async (refreshToken)=> {
     const res = await fetch("/api/user/refreshAccessToken", {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
+        headers:{
+             "Authorization": `Bearer ${refreshToken}`
+        }
     });
 
     if (!res.ok) throw new Error("Failed to get accessToken user");
@@ -105,7 +107,7 @@ export const updateApiUser = async (value,token)=>{
              "Content-Type": "application/json",
              "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
         },
-        // credentials: "include",
+        credentials: "include",
         body: JSON.stringify({
                 "userName":value.userName,
                 "email": value.email,
@@ -139,7 +141,7 @@ export const addToCartUserApi = async(value,token)=>{
     const res = await fetch("/api/user/addToCart",{
          method:"PUT",
         headers: {
-             "Content-Type": "application/json",
+             "Content-Type": "application/json",  //đảm bảo chuỗi truyền vào dạng json
              "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
         },
         // credentials: "include",
@@ -155,7 +157,7 @@ export const addToCartUserApi = async(value,token)=>{
     return data
 }
 
-
+//Xóa sản phẩm khỏi giỏ hàng
 export const removeToCartUserApi = async(value,token)=>{
     const res = await fetch("/api/user/removeFromCart",{
         method:"PUT",
@@ -171,5 +173,18 @@ export const removeToCartUserApi = async(value,token)=>{
         })
     })
     const data = res.json()
+    return data
+}
+
+
+export const getAllUserApi = async(token)=>{
+    const res = await fetch("/api/user",{
+        method:"GET",
+        headers: {
+             "Content-Type": "application/json",
+             "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
+        },
+    })
+    const data = await res.json()
     return data
 }

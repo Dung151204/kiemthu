@@ -2,7 +2,6 @@ import {createBrowserRouter } from "react-router-dom";
 import Layout from "./components/theme/masterLayout/Layout";
 import { ROUTER } from "./utils/router";
 import HomePage from "./pages/public/homePage/Home.jsx";
-import Product_duphong from "./pages/public/productPage/ProductPage_duphong";
 import ProductPage from "./pages/public/productPage/ProductPage";
 import NotificationPage from "./pages/public/notificationPage/NotificationPage";
 import DetailNotificationPage from "./pages/public/detailPage/detailNotification/detailNotificationPage";
