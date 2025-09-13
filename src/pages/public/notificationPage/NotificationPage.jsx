@@ -1,13 +1,13 @@
 import { generatePath, Link } from "react-router-dom"
-import { Breadcrumb } from "../../../components/index"
-import { useEffect, useState } from "react"
 import { AiOutlineLoading3Quarters } from "react-icons/ai"
+import { useEffect, useState } from "react"
+import { Breadcrumb } from "../../../components/index"
+import { getApiBlog } from "../../../service/blogApiService"
 const NotificationPage = ()=>{
     const [dataNoti,setDataNoti] = useState([])
     const [isLoading,setIsLoading] = useState(true)
     useEffect(()=>{
-        fetch("/api/blog")
-        .then((res)=>res.json())
+        getApiBlog()
         .then((dt)=>{
             setDataNoti(dt.data)
             setIsLoading(false)
@@ -20,7 +20,7 @@ const NotificationPage = ()=>{
             isLoading ? 
                 <div className=" mt-10 w-full mb-10"><AiOutlineLoading3Quarters className="animate-spin text-center m-auto text-[28px] text-blue-500"/></div>
                 :
-                <div className="gap-2 flex flex-wrap justify-center w-full">
+                <div className="gap-2 flex flex-wrap justify-center w-full pt-3 pb-6">
                 {
                     dataNoti.map(noti=>(
                         

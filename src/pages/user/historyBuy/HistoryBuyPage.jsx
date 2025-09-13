@@ -1,3 +1,8 @@
+import { useEffect } from "react";
+import { getAccessTokenApiUser,addToCartUserApi } from "../../../service/userApiService";
+import { getOrderByUserApi } from "../../../service/orderApiService";
+import { useSelector } from "react-redux";
+import { SelectUser } from "../../../redux/selector";
 
 const orders = [
   {
@@ -19,6 +24,29 @@ const orders = [
 
 
 const HistoryPage = ()=>{
+  const dataUser = useSelector(SelectUser)
+  
+    useEffect(()=>{
+      // console.log("chay effec")
+      // const fetchApi = async()=>{
+      //   const data  =await getOrderByUserApi(dataUser.accessToken)
+      //   console.log("history : ",data)
+      // }
+      // console.log("dung effec")
+      // fetchApi()
+
+      // const addCartUser = async()=>{
+      //   const data = await addToCartUserApi({
+      //        "id": "66ec35b4359d458f726052bc",
+      //         "quantity": 1,
+      //         "color": "Đen",
+      //         "size": "S",
+      //         "price": 159000
+      //   },dataUser.accessToken)
+      //   console.log("dataCartUser : ",data)
+      // }
+      // addCartUser()
+    },[])
     return (
         <div>
             <div className="w-[80%] m-auto min-h-[500px] bg-blue-50">

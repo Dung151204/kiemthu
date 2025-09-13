@@ -1,0 +1,129 @@
+.header-page {
+  width: 100%;
+  min-height: 100px;
+}
+
+.heading {
+  margin: 0 auto;
+  min-height: 87px;
+}
+
+.search-heading {
+  display: flex;
+  align-items: center;
+  background-color: green;
+  border-radius: 50%;
+  position: relative;
+}
+.search-heading .input-search {
+  width: 100%;
+  height: 33px;
+  border-radius: 50px;
+  padding: 19px 20px;
+  outline: none;
+  border: 1px solid #d5d5d5;
+}
+.search-heading .icon-search {
+  position: absolute;
+  right: 10px;
+  width: 40px;
+  height: 30px;
+  font-size: 20px;
+}
+.search-heading .icon-search:hover {
+  cursor: pointer;
+}
+
+.cart-heading .icon-cart {
+  font-size: 30px;
+}
+.cart-heading .quatity_product {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  border-radius: 50px;
+  color: #fff;
+  position: relative;
+  top: -10px;
+  right: 10px;
+}
+
+.avt-profile {
+  border-radius: 50px;
+}
+
+.profile-content {
+  display: none;
+}
+
+.profile-heading:hover .profile-content {
+  display: block;
+}
+
+.container-nav {
+  width: 100%;
+  min-height: 24px;
+  background-color: #f7f7f7;
+  position: relative;
+}
+
+.list-nav li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 40px;
+  text-align: center;
+  padding: 0 20px;
+  font-size: 17px;
+}
+.list-nav li a:hover {
+  color: #bf3030;
+}
+
+.open {
+  display: block;
+  width: 200px;
+  float: right;
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+}
+.open li {
+  width: 100%;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 6px;
+  border-radius: 15px;
+  background-color: #ff0000;
+  transition: all 0.2s ease;
+}
+
+.containerNavbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+}
+
+.shownav {
+  transform: translateX(0);
+}
+
+.itemAccoutNavbarMobile {
+  max-height: 38px;
+  transition: all ease-out 0.4s;
+}
+
+.itemAccoutNavbarMobile:hover {
+  max-height: 118px;
+}/*# sourceMappingURL=style.css.map */

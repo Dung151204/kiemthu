@@ -7,12 +7,8 @@ import fullset1 from "./users/fullset1.jpg"
 import fullset2 from "./users/fullset2.jpg"
 import fullset3 from "./users/fullset3.jpg"
 
-import chitiet1 from "./users/chitiet1.jpg"
-import avatar from "./users/avt.png"
 
 export {
     slider1,slider2,  slider3,slider4,slider5,
     fullset1,fullset2,fullset3,
-    chitiet1,
-    avatar
 }

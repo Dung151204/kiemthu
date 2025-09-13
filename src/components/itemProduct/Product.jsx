@@ -28,6 +28,7 @@ const Product = (prop)=>{
                    <p className="text-[14px]">Đã bán 125</p>
                 </div>
                 <Button 
+                    navigate = {`/DetailProduct/${prop.slug}`}
                     name = "Thêm vào giỏ"
                     style = "border-[#ff0000]  p-1 pr-3 pl-3 float-right mt-3 mb-3 text-[#ff0000] hover:bg-[#ff0000] hover:text-white"
                 />

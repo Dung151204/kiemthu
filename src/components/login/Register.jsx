@@ -1,32 +1,80 @@
 import { IoCloseSharp } from "react-icons/io5";
 import "./style.scss"
+import { registerApiUser } from "../../service/userApiService";
+import { useEffect, useState } from "react";
+import {validateForm} from "./validateForm"
+import { useToast } from "../../components/toastMessage/ToastMessage";
 const Register = ({setShowRegister,showRegister,setShowLogin})=>{
+      const {showToast} = useToast()
+      const [email,setEmail] = useState("")
+      const [phoneNumber,setPhoneNumber] = useState("")
+      const [userName,setUserName] = useState("")
+      const [password,setPassword] = useState("")
+      const [confirmPassword,setConfirmPassword] = useState("")
+      const [checkPass,setCheckPass] = useState(false)
+      const [validate,setValidate] = useState({})
+      const handelCheckPassword = (value)=>{
+            value!==password ?  setCheckPass(true) :  setCheckPass(false)
+      }
+      const handelRegister = async()=>{
+            try{
+
+                  const validate = validateForm({ "email":email, "phone" : phoneNumber,"name" : userName, "password":password, "confirmPassword":confirmPassword },"register")
+                  setValidate(validate)
+                  if(email ==="" || phoneNumber ==="" || userName==="" || password===""){
+                        showToast("Bạn cần nhập đủ thông tin","error")
+                  }
+                  else{
+                       const data =await registerApiUser({
+                              email,
+                              phoneNumber,
+                              userName,
+                              password
+                        })
+                        showToast("Đăng kí thành công")
+                  }
+            }
+            catch(err){
+                  showToast("Đăng kí thất bại","error")
+                  console.error("Lỗi : ",err)
+            }
+      }
     return (
-        <div onClick={()=>setShowRegister(false)} className=" bg-[#a19a9a56] absolute top-0 bottom-0 left-0 right-0 z-50 flex justify-center">
-            <div onClick={(e)=>{e.stopPropagation()  }} className={ `${showRegister===true ? " show " : ""} modelLogin fixed shadow-xl rounded-lg min-w-[40%]  bg-white m-auto mt-10 pl-3 pr-3 pb-10`}>
+        <div onClick={()=>setShowRegister(false)} className=" bg-[#a19a9a56] absolute top-0 bottom-0 left-0 right-0 z-20 flex justify-center">
+            <div onClick={(e)=>{e.stopPropagation()  }} className={ `${showRegister===true ? " show " : ""} modelLogin fixed shadow-xl rounded-lg min-w-[40%] min-h-[550px]  bg-white m-auto mt-10 pl-3 pr-3 pb-20`}>
                   <h2 className=" text-center p-4 text-[30px] font-bold text-blue-700 uppercase">Đăng KÝ</h2>
-                  <div className=" flex">
+                  <div className="flex">
                         <span className="mt-3 mb-2 font-medium min-w-[160px] ">Email :</span>
-                        <input className="outline-blue-400 pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid border-[#ccc]" type="text" placeholder="Email"/>
+                        <input value={email || ""} onChange={(e)=>setEmail(e.target.value)} className={ `${validate.email ? "outline-red-500 border-red-500 " : "outline-blue-400 border-[#ccc]" } pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid `} type="text" placeholder="Email" required />
                   </div>
-                  <div className=" flex">
+                  <p className="text-[12px] text-red-500">{validate.email}</p>
+                  <div className=" flex mt-2">
                         <span className="mt-3 mb-2 font-medium min-w-[160px]">Số điện thoại :</span>
-                        <input className="outline-blue-400 mt-2 pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid border-[#ccc]" type="text" placeholder="Số điện thoại"/>
+                        <input value={phoneNumber || ""} onChange={(e)=>setPhoneNumber(e.target.value)} className={ `${validate.phone ? "outline-red-500 border-red-500 " : "outline-blue-400 border-[#ccc]" } pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid `} type="text" placeholder="Số điện thoại" required />
                   </div>
-                  <div className=" flex">
+                  <p className="text-[12px] text-red-500">{validate.phone}</p>
+
+                  <div className=" flex mt-2">
                         <span className="mt-3 mb-2 font-medium min-w-[160px]">Họ và tên :</span>
-                        <input className="outline-blue-400 mt-2 pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid border-[#ccc]" type="text" placeholder="Họ và tên"/>
+                        <input value={userName|| ""} onChange={(e)=>setUserName(e.target.value)} className={ `${validate.name ? "outline-red-500 border-red-500 " : "outline-blue-400 border-[#ccc]" } pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid `} type="text" placeholder="Họ và tên" required />
                   </div>
-                  <div className="mt-3 pt-0 flex">
+                  <p className="text-[12px] text-red-500">{validate.name}</p>
+
+                  <div className=" flex items-center mt-2">
                         <span className="mb-2 font-medium min-w-[160px]">Mật khẩu :</span>
-                        <input className="outline-blue-400 pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid border-[#ccc]" type="password" placeholder="Mật khẩu"/>
+                        <input value={password|| ""} onChange={(e)=>setPassword(e.target.value)} className={ `${validate.password ? "outline-red-500 border-red-500 " : "outline-blue-400 border-[#ccc]" } pt-2 pb-2 pl-3 rounded-lg flex-1 border border-solid `} type="password" placeholder="Mật khẩu" required />
                   </div>
-                  <div className="mt-3 pt-0 flex">
+                  <p className="text-[12px] text-red-500">{validate.password}</p>
+
+                  <div className=" flex items-center mt-2">
                         <span className="mb-2 font-medium min-w-[160px]">Nhập lại mật khẩu :</span>
-                        <input className="outline-blue-400 pt-1 pb-1 pl-3 rounded-lg flex-1 border border-solid border-[#ccc]" type="password" placeholder="Nhập lại mật khẩu"/>
+                        <input value={confirmPassword ||""}  onChange={(e)=> setConfirmPassword(e.target.value)} className={ `${validate.confirmPassword ? "outline-red-500 border-red-500 " : "outline-blue-400 border-[#ccc]" } pt-2 pb-2 pl-3 rounded-lg flex-1 border border-solid `} type="password" placeholder="Nhập lại mật khẩu" required />
                   </div>
+                  <p className="text-[12px] text-red-500">{validate.confirmPassword}</p>
+
+                  {/* <p className={`${checkPass ? "" : "hidden"} text-red-500 text-[12px]`}>Mật khẩu không trùng khớp</p> */}
                   <div className="flex justify-center p-5 border-b border-solid border-[#ccc]">
-                    <button className="bg-blue-600 w-[80%] m-auto text-white rounded-lg p-2">Đăng nhập</button>
+                    <button onClick={handelRegister} className="bg-blue-600 w-[80%] m-auto text-white rounded-lg p-2">Đăng kí</button>
                   </div>
                   <div className="flex justify-around mt-2">
                      <p>

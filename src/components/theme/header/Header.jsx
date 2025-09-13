@@ -1,21 +1,27 @@
 import './style.scss'
 import { IoIosSearch } from "react-icons/io";
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { generatePath, Link, useLocation } from 'react-router-dom';
+import { generatePath, Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaPhone } from "react-icons/fa6";
 import { LuLogIn } from "react-icons/lu";
 import { GrCart } from "react-icons/gr";
 import { GiCoinsPile, GiHamburgerMenu } from "react-icons/gi";
 import { BiSolidDownArrow } from "react-icons/bi";
+import { FaUser } from "react-icons/fa";
 import { AiOutlineHome } from "react-icons/ai";
 import { RiShoppingBag3Line } from "react-icons/ri";
 import { IoShirtOutline } from "react-icons/io5";
 import { PiPants } from "react-icons/pi";
 import { FiBell } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
-import { chitiet1,avatar } from '../../../assets/index';
 import { MdDeleteOutline } from "react-icons/md";
-
+import CartProduct from '../../../components/cartProduct/CartProduct';
+import { useSelector,useDispatch } from 'react-redux';
+import guestCartSlice from '../../../redux/guestCartSlice';
+import authSlice from '../../../redux/authSlice';
+import { SelectGuestCart,SelectUser, SelectUserCart } from '../../../redux/selector';
+import { logoutApiUser } from '../../../service/userApiService';
+import { useToast } from '../../../components/toastMessage/ToastMessage';
 const tabs = [
     { id: "1", namePage: "Trang chủ", icon: <AiOutlineHome />, href: "/" },
     { id: "2", namePage: "Sản phẩm", icon: <RiShoppingBag3Line />, href: "/product" },
@@ -26,6 +32,7 @@ const tabs = [
 
 
 const Header = ({setShowLogin,setShowRegister})=>{
+    const {showToast} = useToast()
     const location = useLocation();
     const [tab,setTab] = useState(location.pathname)   // dùng để set line dưới tab đc chọn
     const [widthWindow,setWidthWindow] = useState("")
@@ -33,8 +40,10 @@ const Header = ({setShowLogin,setShowRegister})=>{
     const refLine = useRef(null)
     const [shownav,setShownav] = useState(false)
     const [showCart,setShowCart] = useState(false)
-    const role = "user"
-    
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const dataUser = useSelector(SelectUser)
+    const listProductCar =dataUser.role === "user" || dataUser.role === "admin" ? useSelector(SelectUserCart) : useSelector(SelectGuestCart)
 
     const handelToggeNavbar = ()=>{ // đóng/ mở navbar 
         setShownav(!shownav)
@@ -65,6 +74,16 @@ const Header = ({setShowLogin,setShowRegister})=>{
         
     },[location.pathname,widthWindow])
 
+    const handelLogOut = async()=>{
+        try {
+            const logout = await logoutApiUser()
+            dispatch(authSlice.actions.logout())
+            showToast("Đăng xuất thành công")
+            navigate("/")
+        } catch (error) {
+            showToast("Đăng xuất thất bại")
+        }
+    }
     
     return(
        <div className='header-page z-10 pt-1 pb-2 bg-white sticky top-0 left-0 w-full'>
@@ -90,9 +109,37 @@ const Header = ({setShowLogin,setShowRegister})=>{
                                 </Link>
                             </li>
                         ))}
+                        {
+                            dataUser.role ==="user" || dataUser.role ==="admin" ? 
+                            <li className='itemAccoutNavbarMobile w-full font-medium pt-2 pb-2 border-t border-b overflow-hidden'>
+
+                               <div className='flex  pl-6 items-center '>
+                                    <FaUser className='mr-2'/>
+                                    <span className='text-blue-500'>Tài khoản</span>
+                               </div>
+                                <ul className=''>
+                                    <li onClick={()=>{navigate("/profile"); setShownav(!shownav)}} className='pt-2 pb-2 pl-6 hover:text-[#ff0000] hover:cursor-pointer'>Thông tin tài khoản</li>
+                                   {
+                                     dataUser.role ==="user" ? 
+                                     <li onClick={()=>{navigate("/history-buy"); setShownav(!shownav)}}  className='pt-2 pb-2 pl-6 hover:text-[#ff0000] hover:cursor-pointer'>Lịch sử mua hàng</li>
+                                     :
+                                     <li onClick={()=>{navigate("/profile"); setShownav(!shownav)}}  className='pt-2 pb-2 pl-6 hover:text-[#ff0000] hover:cursor-pointer'>Quản lý cửa hàng</li>
+
+                                   }
+                                </ul>
+                            </li>
+                            :
+                            ""
+                        }
                     </ul>
-                    <div className='text-[16px] font-medium absolute bottom-0 bg-[#ff0000] w-full text-center text-white p-3'>Đăng kí</div>
-                    <IoClose className='absolute top-3 right-1 text-[24px] hover:cursor-pointer hover:bg-[#ccc]' onClick={handelToggeNavbar}/>
+                    {
+                        dataUser.role ==="user" || dataUser.role ==="admin" ?
+                            
+                            <div onClick={()=>{handelLogOut();navigate("/"); setShownav(!shownav)}} className='text-[16px] font-medium absolute bottom-0 bg-[#ff0000] w-full text-center text-white p-3 hover:cursor-pointer hover:opacity-80'>Đăng xuất</div>
+                                :
+                            <div onClick={()=>{setShowLogin(true); navigate("/") ;setShownav(!shownav)}} className='text-[16px] font-medium absolute bottom-0 bg-[#ff0000] w-full text-center text-white p-3 hover:cursor-pointer hover:opacity-80'>Đăng nhập</div>
+                    }
+                    <IoClose className='absolute top-3 right-1 text-[24px] hover:cursor-pointer hover:bg-[#dd0505]' onClick={handelToggeNavbar}/>
                 </div>
            </div>
            {/*  */}
@@ -115,66 +162,45 @@ const Header = ({setShowLogin,setShowRegister})=>{
                     </div>
                     
                     {/* Giỏ hàng */}
-                    <div onClick={()=>setShowCart(!showCart)} className='cart-heading relative flex hover:cursor-pointer ml-3 md:ml-0 '>
-                        <GrCart className='icon-cart size-7'/>
-                        <p className='quatity_product'>2</p>
-                       {showCart && <div className='cart-shopping shadow-2xl border-2 bg-white  w-[500px] min-h-[200px] max-h-[520px]  rounded-md absolute z-30 top-[100%] right-[-20px]'>
-                             <div className='text-center p-3 uppercase font-medium  '>
-                                Giỏ hàng
-                             </div>
-                             <p className='pb-2 pl-3 border-b border-solid border-[#ccc] text-blue-600'>Bạn đang có 1 sản phẩm </p>
-                             <ul className="list_p_cart-shopping mb-[100px] w-full overflow-y-auto max-h-[400px]">
-                                <li className='bg-blue-50 mt-1 h-[70px] pl-1 pr-1 border border-solid border-[#ddd] '>
-                                   <Link to={generatePath("/detailProduct/:slug",{slug:"ao-phong-regular-l.2.2860"})} onClick={()=>setShowCart(!showCart)} className='flex items-center'>
-                                        <img src={chitiet1} className='w-[60px]' alt="" />
-                                        <div className='flex items-center justify-between w-full text-[13px] pl-1 pr-1'>
-                                        <div>
-                                                <p className='text-[15px] font-medium'>Áo polos dành cho nam</p>
-                                                <div className='flex'>
-                                                    <p>size : <span className='font-medium'>M</span></p>
-                                                    <p className='ml-4'>Màu : <span className='font-medium' >Đỏ</span></p>
-                                                </div>
-                                                <div className='flex items-center'>
-                                                    <p>Giá :<span className='text-[15px] font-medium'>120,000đ</span></p>
-                                                    <p className='ml-4'>x2</p>
-                                                </div>
-                                        </div>
-                                        <div onClick={(e)=>{e.stopPropagation(); e.preventDefault()}} className='p-2 hover:bg-red-300'>
-                                            <MdDeleteOutline className='text-[22px] '/>
-                                        </div>
-                                        </div>
-                                   </Link>
-                                </li>
-                              
-                             </ul>
-                             <div className='absolute bottom-0 w-full  border-t border-solid border-[#ccc] bg-white'>
-                                <Link to={"/detailCart"} className='text-center block p-2 bg-blue-50 font-medium '>Xem giỏ hàng</Link>
-                             </div>
-                        </div>}
+                    <div className='cart-heading relative flex hover:cursor-pointer ml-3 md:ml-0 '>
+                        <GrCart onClick={()=>setShowCart(!showCart)} className='icon-cart size-7'/>
+                        {listProductCar.products.length !==0 ? 
+                            <p className='quatity_product'>{listProductCar.products.length}</p> 
+                            :
+                            ""
+                        }
+                       {showCart && <CartProduct setShowCart = {setShowCart}/>}
                     </div>
                     {/* Tài khoản */}
                     <div className='info-login-heading flex items-center'>
-                    {/* <div className='hidden sm:flex '>
-                            <p onClick={()=>setShowLogin(true)} className='block w-[88px] cursor-pointer hover:text-blue-400'>Đăng nhập |</p>
-                            <p onClick={()=>setShowRegister(true)} className='ml-2 block w-[86px] cursor-pointer hover:text-blue-400'>Đăng kí</p>
-                    </div> */}
-                        <div className='profile-heading items-center hidden sm:flex relative '>
+                        
+                        {dataUser.role ==="user" || dataUser.role ==="admin" ?
+                            //đã login
+                            <div className='profile-heading items-center hidden sm:flex relative '>
 
-                            <img src={avatar}  className='avt-profile size-8  '/>
-                            <BiSolidDownArrow  className='w-3 ml-1' />
-                            <div className='profile-content absolute top-full right-[-10px] w-[160px] min-h-[20px] border bg-white z-10 shadow-2xl'>
-                                <ul className='text-center'>
-                                    <li className='p-1 cursor-pointer hover:bg-blue-50'><Link to={"/profile"}>Thông tin tài khoản</Link></li>
-                                    {
-                                        role === "admin" ? 
-                                            <li className='p-1 cursor-pointer hover:bg-blue-50'>Quản lý của hàng</li>
-                                             : 
-                                             <li className='p-1 cursor-pointer hover:bg-blue-50'><Link to={"/history-buy"}>Lịch sử mua hàng</Link></li>
-                                    }
-                                    <li className='border-t p-1 cursor-pointer hover:bg-red-50'>đăng xuất</li>
-                                </ul>
+                                <img src={dataUser.userInfor.avatar}  className='avt-profile size-8  '/>
+                                <BiSolidDownArrow  className='w-3 ml-1' />
+                                <div className='profile-content absolute top-full right-[-10px] w-[160px] min-h-[20px] border bg-white z-10 shadow-2xl'>
+                                    <ul className='text-center'>
+                                        <li className='p-1 cursor-pointer hover:bg-blue-50'><Link to={"/profile"}>Thông tin tài khoản</Link></li>
+                                        {
+                                            dataUser.role === "admin" ? 
+                                                <li className='p-1 cursor-pointer hover:bg-blue-50'>Quản lý của hàng</li>
+                                                : 
+                                                <li className='p-1 cursor-pointer hover:bg-blue-50'><Link to={"/history-buy"}>Lịch sử mua hàng</Link></li>
+                                        }
+                                        <li onClick={handelLogOut} className='border-t p-1 cursor-pointer hover:bg-red-50'>đăng xuất</li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
+                                 :
+                                //chưa login
+                            <div className='hidden sm:flex '>
+                                <p onClick={()=>setShowLogin(true)} className='block w-[88px] cursor-pointer hover:text-blue-400'>Đăng nhập |</p>
+                                <p onClick={()=>setShowRegister(true)} className='ml-2 block w-[86px] cursor-pointer hover:text-blue-400'>Đăng kí</p>
+                            </div>
+                        }
+
                     </div>
                     <div className='block sm:hidden mr-4 hover:cursor-pointer' onClick={handelToggeNavbar}>
                         < GiHamburgerMenu className='size-6'/>
