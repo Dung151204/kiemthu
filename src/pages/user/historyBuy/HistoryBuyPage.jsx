@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAccessTokenApiUser,addToCartUserApi } from "../../../service/userApiService";
+import { addToCartUserApi } from "../../../service/userApiService";
 import { getOrderByUserApi } from "../../../service/orderApiService";
 import { useSelector } from "react-redux";
 import { SelectUser } from "../../../redux/selector";

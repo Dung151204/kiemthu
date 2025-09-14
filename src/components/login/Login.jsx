@@ -1,7 +1,7 @@
 import { IoCloseSharp } from "react-icons/io5";
 import "./style.scss"
-import { loginApiUser,getAccessTokenApiUser } from "../../service/userApiService";
-import { useEffect, useState } from "react";
+import { loginApiUser } from "../../service/userApiService";
+import { useState } from "react";
 import { validateForm } from "./validateForm";
 import { useToast } from "../../components/toastMessage/ToastMessage";
 import { useDispatch } from "react-redux";
@@ -32,13 +32,9 @@ const LoginModel = ({setShowLogin,showLogin,setShowRegister})=>{
                         role: dataServer.data.user.role,
                     })
                 );
-
                 dispatch(fetchCart(dataServer.data.accessToken))
-
-                // console.log("dataServer",dataServer)
-                // const dataAccessToken = await getAccessTokenApiUser(dataServer.data.refreshToken)
-                // console.log("dataAccessToken",dataAccessToken)
                 setShowLogin(false);
+                
             } catch (err) {
                 console.error(err);
                 showToast("Login thất bại", "error");

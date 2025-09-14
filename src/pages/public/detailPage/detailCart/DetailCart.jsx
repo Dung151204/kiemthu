@@ -1,17 +1,16 @@
 import { generatePath, Link } from "react-router-dom";
-import { useState } from "react";
 import { LiaShippingFastSolid } from "react-icons/lia";
 import { MdOutlineCurrencyExchange } from "react-icons/md";
 import { MdOutlineSupportAgent } from "react-icons/md";
-
 import { MdDeleteOutline } from "react-icons/md";
-import  {Button} from "../../../../components/index";
 import { useDispatch,useSelector } from "react-redux";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
+import  {Button} from "../../../../components/index";
 import { SelectGuestCart, SelectUser, SelectUserCart } from "../../../../redux/selector";
 import guestCartSlice from "../../../../redux/guestCartSlice";
 import { useToast } from "../../../../components/toastMessage/ToastMessage";
 import { removeCartUser,addCartUser } from "../../../../redux/userCartSlice";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const DetailCart = ()=>{
     const dispatch = useDispatch()
@@ -23,7 +22,6 @@ const DetailCart = ()=>{
     const handelQuatity = async (e,data)=>{
          e.stopPropagation()
         e.preventDefault()
-        
         try {
             if(dataUser.role === "admin" || dataUser.role==="user"){
                 let quantityChange
