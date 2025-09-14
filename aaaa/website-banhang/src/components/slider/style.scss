@@ -1,0 +1,36 @@
+.swiper-button-next, .swiper-button-prev {
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.swiper-button-next::after, .swiper-button-prev::after {
+  font-size: 18px;
+  color: red; /* màu mũi tên */
+}
+/* Ẩn mũi tên khi chưa hover */
+.swiper-button-next,
+.swiper-button-prev {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Khi hover vào slider thì mũi tên hiện */
+.swiper:hover .swiper-button-next,
+.swiper:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+/* Chấm tròn mặc định màu trắng */
+.swiper-pagination-bullet {
+  background-color: rgb(237, 234, 234) !important;
+  opacity: 0.7;
+}
+
+/* Chấm đang active */
+.swiper-pagination-bullet-active {
+  background-color: #c23564 !important;
+  opacity: 1;
+}
+

@@ -1,0 +1,14 @@
+
+
+.modelLogin {
+  animation: sliderModel 0.5s ease forwards;
+}
+
+@keyframes sliderModel {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
