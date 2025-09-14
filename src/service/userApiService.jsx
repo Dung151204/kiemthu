@@ -1,7 +1,9 @@
+import { apiFetch } from "./autoAPI";
+
+
 
 export const registerApiUser = async(newUser)=>{
-       
-         const res = await fetch("/api/user/register",{
+         const data = await apiFetch("/api/user/register",{
                 method: 'POST',
                 headers: { "Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -11,35 +13,14 @@ export const registerApiUser = async(newUser)=>{
                     "phoneNumber": newUser.phoneNumber,
                 }),
             })
-        if (!res.ok) throw new Error("Failed to register user");
-        const data = await res.json();
         return data;   
-
-       
       
 }
 
 
-// export const registerApiUser = (newUser)=>{
-//     return fetch("/api/user/register",{
-//         method: 'POST',
-//         headers: { "Content-Type": "application/json"},
-//         body: JSON.stringify({
-//             "email":newUser.email,
-//             "password": newUser.password,
-//             "userName": newUser.userName,
-//             "phoneNumber": newUser.phoneNumber,
-//          }),
-//     })
-//     .then(res=>{
-//         if(!res.ok) throw new Error("Register Failed")
-//         return res.json()
-//     })
-// }
-
 export const loginApiUser= async(value)=>{
  
-       const res =  await fetch("/api/user/login",{
+       const data =  await apiFetch("/api/user/login",{
           method:"POST",
           headers: { "Content-Type": "application/json"},
             body: JSON.stringify({
@@ -48,60 +29,23 @@ export const loginApiUser= async(value)=>{
             }),
            credentials: "include"
        })
-       if(!res.ok) throw new Error("Failed Login")
-       const data = await res.json()
        return data
   
 }
 
-// export const loginApiUser = (value)=>{
-//     return  fetch("/api/user/login",{
-//         method:"POST",
-//         headers: { "Content-Type": "application/json"},
-//         body: JSON.stringify({
-//                 "loginValue":value.email,
-//                 "password": value.password,
-//         }),
-//     })
-//     .then(res=>{
-//         if(!res.ok) throw new Error("Login Failed")
-//         return res.json()
-//     })
-//     .then(data=>data)
-//     .catch(err=>err)
-// }
 
 export const logoutApiUser = async()=>{
   
-        const res = await fetch("/api/user/logout",{
-                        method:"POST"
-                    })
-        if(!res.ok) throw new Error("Logout Failed")
-        return await res.json()
+        const data = await apiFetch("/api/user/logout",{
+                method:"POST"
+            })
+        return data
 }
 
 
-
-//Lấy accessToken mới thông quá refeshToken trong cookie
-export const getAccessTokenApiUser = async (refreshToken)=> {
-    const res = await fetch("/api/user/refreshAccessToken", {
-        method: "GET",
-        credentials: "include",
-        headers:{
-             "Authorization": `Bearer ${refreshToken}`
-        }
-    });
-
-    if (!res.ok) throw new Error("Failed to get accessToken user");
-    const data = await res.json();
-    return data;   // trả về token
-};
-
-
-
-//Cập nhật thông tin User
+////Cập nhật thông tin User
 export const updateApiUser = async (value,token)=>{
-    const res = await fetch("/api/user/current",{
+    const data = await apiFetch("/api/user/current",{
         method:"PUT",
         headers: {
              "Content-Type": "application/json",
@@ -118,33 +62,28 @@ export const updateApiUser = async (value,token)=>{
         })
         
     })
-    const data = await res.json()
     return data
 }
 //Lấy thông tin user đang đăng nhập  (Bao gồm cả giỏ hàng)
 export const getApiUserCurrent  = async(token)=>{
-    const res = await fetch("/api/user/current",{
+    const data = await apiFetch("/api/user/current",{
         method:"GET",
         headers:{
             "Content-Type": "application/json",
              "Authorization": `Bearer ${token}`,
-        },
-        // credentials: "include"   // lấy token trên cookie
+        }
     });
-    if (!res.ok) throw new Error("Failed fetch user current");
-    const data = await res.json();
     return data;   // trả về data
 }
 
 //Thêm sản phẩm vào giỏ hàng của user trên server
 export const addToCartUserApi = async(value,token)=>{
-    const res = await fetch("/api/user/addToCart",{
+    const data = await apiFetch("/api/user/addToCart",{
          method:"PUT",
         headers: {
              "Content-Type": "application/json",  //đảm bảo chuỗi truyền vào dạng json
              "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
         },
-        // credentials: "include",
         body: JSON.stringify({
                 "pid":value.id,
                 "quantity": value.quantity,
@@ -153,13 +92,12 @@ export const addToCartUserApi = async(value,token)=>{
                 "price": value.price,
         })
     })
-    const data = await res.json()
     return data
 }
 
 //Xóa sản phẩm khỏi giỏ hàng
 export const removeToCartUserApi = async(value,token)=>{
-    const res = await fetch("/api/user/removeFromCart",{
+    const data = await apiFetch("/api/user/removeFromCart",{
         method:"PUT",
         headers: {
              "Content-Type": "application/json",
@@ -172,19 +110,17 @@ export const removeToCartUserApi = async(value,token)=>{
                 "size": value.size,
         })
     })
-    const data = res.json()
     return data
 }
 
 
 export const getAllUserApi = async(token)=>{
-    const res = await fetch("/api/user",{
+    const data = await apiFetch("/api/user",{
         method:"GET",
         headers: {
              "Content-Type": "application/json",
              "Authorization": `Bearer ${token}`  //truyền token người dùng vào để gửi lên serve
         },
     })
-    const data = await res.json()
     return data
 }

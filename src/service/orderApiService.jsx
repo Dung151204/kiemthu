@@ -1,5 +1,7 @@
+import { apiFetch } from "./autoAPI"
+
 export const getOrderByUserApi= async(token)=>{     //Lấy thông tin mà user đã đặt hàng
-    const res =await fetch("/api/order/getorderByUser",{
+    const data =await apiFetch("/api/order/getorderByUser",{
             method:"GET",
             headers:{
                 "Content-Type": "application/json",
@@ -7,20 +9,18 @@ export const getOrderByUserApi= async(token)=>{     //Lấy thông tin mà user 
             },
             //  credentials: "include"
     })
-    if(!res.ok) throw new Error("faild get order by User")
-    const data = await res.json()
     return data
 }
 
 export const orderCartApi = async(value,token)=>{
-    const res = fetch("/api/order",{
+    const data = apiFetch("/api/order",{
         method:"POST",
         headers:{
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
-            "product": value.cart,
+            "products": value.cart,
             "note": value.note,
              "shippingPrice": 35000,
             "discount": 0,
@@ -33,6 +33,5 @@ export const orderCartApi = async(value,token)=>{
         }),
 
     })
-    const data = await res.json()
     return data
 }

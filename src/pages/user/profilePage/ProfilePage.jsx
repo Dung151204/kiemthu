@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getApiUserCurrent ,updateApiUser,getAccessTokenApiUser, getAllUserApi} from "../../../service/userApiService"
+import { getApiUserCurrent ,updateApiUser, getAllUserApi} from "../../../service/userApiService"
 import { useSelector,useDispatch } from "react-redux"
 import { SelectUser } from "../../../redux/selector"
 import { useToast } from "../../../components/toastMessage/ToastMessage"
@@ -94,7 +94,7 @@ const ProfilePage = ()=>{
                     </div>
                      <div className="flex items-center flex-wrap mb-2">
                         <p className="w-[150px] font-medium flex flex-col">Nhập PassWord: <span className="text-[12px] text-red-500">(Bắt buộc)</span></p>
-                        <input className="flex-1 p-1 pl-4 border rounded-md outline-blue-400" type="text"  value={password} onChange={e=>setPassWord(e.target.value)} />
+                        <input className="flex-1 p-1 pl-4 border rounded-md outline-blue-400" type="password"  value={password} onChange={e=>setPassWord(e.target.value)} />
                     </div>
                 <div className="flex justify-center">
                         <button onClick={handelChangeInfo} className="bg-blue-500 min-w-[180px] mt-2 rounded-lg text-white p-1 pl-4 pr-4 cursor-pointer hover:opacity-90">

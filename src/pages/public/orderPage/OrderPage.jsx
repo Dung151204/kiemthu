@@ -101,16 +101,22 @@ const OrderPage = ()=>{
     }
     
     const handelOrder  = async()=>{
-      try {
-        const dataUserCurrent = await getApiUserCurrent(dataUser.accessToken)
-        await dispatch(orderCartUser({
-            "value":{...dataUserCurrent.data, note:textNote || ""},
-            "token":dataUser.accessToken
-        })).unwrap()
-         showToast("Đặt hàng thành công")
-      } catch (error) {
-         showToast("Đặt hàng thất bại","error")
-      }
+        if(dataUser.role){
+            try {
+              const dataUserCurrent = await getApiUserCurrent(dataUser.accessToken)
+              await dispatch(orderCartUser({
+                  "value":{...dataUserCurrent.data, note:textNote},
+                  "token":dataUser.accessToken
+              })).unwrap()
+               showToast("Đặt hàng thành công")
+            } catch (error) {
+               showToast("Đặt hàng thất bại","error")
+            }
+        }
+        else{
+            showToast("Bạn cần đăng nhập để đặt hàng","error")
+        }
+
     }
     return (
         <div>
@@ -193,7 +199,7 @@ const OrderPage = ()=>{
                             </div>
                              <div className="flex justify-between">
                                 <p className="w-[100px]">Vận chuyển :</p>
-                                <p className="font-medium text-blue-600 text-[18px]">20.000đ</p>
+                                <p className="font-medium text-blue-600 text-[18px]">35.000đ</p>
                             </div>
                              <div className="flex justify-between">
                                 <p className="w-[100px]">Giảm giá :</p>
@@ -201,7 +207,7 @@ const OrderPage = ()=>{
                             </div>
                              <div className="flex justify-between mt-2 border-t-[3px] pt-2">
                                 <p className="w-[130px]">Tổng thanh toán :</p>
-                                <p className="font-medium text-blue-600 text-[18px]">{listProductCart.total + 20000}đ</p>
+                                <p className="font-medium text-blue-600 text-[18px]">{listProductCart.total + 35000}đ</p>
                             </div>
                             <button onClick={handelOrder} className=" border rounded  w-full md:w-auto hover:opacity-80 p-1 pl-10 pr-10 border-[#ff0000] bg-[#ff0000] text-white mt-9">Hoàn tất đặt hàng</button>
                              <Link to={"/detailCart"}>
